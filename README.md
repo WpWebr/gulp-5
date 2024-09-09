@@ -165,14 +165,14 @@
 - `npm init`
 
 ```
-package name: (mu-gulp-2024)
+package name: (mu-gulp)
 version: (1.0.0)
-description: Gulp + Webpack - для верстки
+description: Gulp 5 для верстки
 entry point: (index.js)
 test command:
-git repository: https://github.com/WpWebr/mu-gulp-2024.git
+git repository: https://github.com/ник/mu-gulp
 keywords:
-author: WpWebr
+author: ник
 license: (ISC)
 ```
 
@@ -182,13 +182,19 @@ license: (ISC)
   "main": "gulpfile.js",
   "type": "module",
 ```
-- создаём [.gitignore](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore)
+- создаём `.gitignore`
+```
+dist/
+package-lock.json
+node_modules/
+src/
+```
+или берём [тут](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore)
 - и дополняем как минимум:
 ```
 dist/
 package-lock.json
 ``` 
-
 - создаём `gulpfile.js`
 
 - создаём основную структуру проэкта: (подробнее см. выше) 
@@ -245,61 +251,6 @@ package-lock.json
 └── README.md                     # документация сборки
 ``` -->
 
-### Пример настройки `tasks`
-
-#### Перенос файлов как есть из `src` в `dist`:
-- в путях (`path.js`) прописываем:
-```
-  build: {
-    // в папку ./dist/files/
-    files: `${buildFolder}/files/`,
-  },
-  src: {
-    // Все файлы с папки и подпапок ./src/files/
-    files: `${srcFolder}/files/**/*.*`,
-  },
-  watch: { 
-    // Все файлы с папки и подпапок ./src/files/
-    files: `${srcFolder}/files/**/*.*`,
-  },
-```
-- в `gulpfile.js`:
-```
-// Основные модули
-import gulp from 'gulp';
-// Импорт путей
-import { path } from './gulp/config/path.js';
-// Передаем значения в глобальную переменную
-global.app = {
-  gulp: gulp,
-  path: path,
-}
-```
-- создаём (задачу - `tasks`) файл:
-./gulp/tasks/copy.js
-```
-export const copy = () => {
-  return app.gulp.src(app.path.src.files)
-    .pipe(app.gulp.dest(app.path.build.files))
-}
-```
-- Прописываем в `gulpfile.js`:
-```
-// Импорт задач
-import { copy } from './gulp/tasks/copy.js'; // копирование
-// Наблюдаем за изменениями в файлах
-function watcher() {
-  // путь к файлам , и действие которое выполняем
-  gulp.watch(path.watch.files, copy);
-}
-// Cценарий по умолчанию:
-const dev = gulp.series(copy,watcher);
-
-// Выполнение сценария по умолчанию
-gulp.task('default', dev);
-```
-
-
 ### Установка плагинов ( npm i -D < название >)
 - gulp                     // Галп
 - del                      // для удаления/очистки
@@ -314,7 +265,7 @@ gulp.task('default', dev);
 - gulp-notify              // Сообщения-подсказки
 - browser-sync             // Локальный сервер
 
-### Преключение на использование .pug (если будем использовать)
+<!-- ### Преключение на использование .pug (если будем использовать)
 - в файле _gulp/config/path.js_ в переменной `global.pug = 'html';` меняем `html` на `pug`
 - в файле _gulp/tasks/html.js_ комментируем - // .pipe(fileinclude())
 - и добавляем:
@@ -327,7 +278,7 @@ gulp.task('default', dev);
 }))
 ```
 - создаем соответствующие файлы _*.pug_ 
-- npm i -D gulp-pug              // установка Pug
+- npm i -D gulp-pug              // установка Pug -->
 
 - sass                           // Препроцесор SASS 
 - gulp-sass                      // и установщик его (SASS) в Gulp
