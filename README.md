@@ -196,6 +196,7 @@ dist/
 package-lock.json
 ``` 
 - создаём `gulpfile.js`
+- разобраться подробнее с сожданием задач [здесь](https://rufri.ru/sovremennaja-cborka-gulp-dlja-veb-razrabotki/)
 
 - создаём основную структуру проэкта: (подробнее см. выше) 
 ```
