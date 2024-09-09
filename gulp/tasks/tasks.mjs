@@ -17,7 +17,9 @@ import { serve } from './serve.mjs'; // браузер
 function watchFiles() {
   plugins.gulp.watch(paths.styles.src, styles);
   plugins.gulp.watch(paths.scripts.src, scripts);
-  plugins.gulp.watch(paths.images.src, plugins.gulp.series(processImages, copyProcessedImages));
+  // Следим за добавлением изображений - обрабатываем и добавляем соответствующие файлы в dist/images и src/imagemin
+  // plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
+  plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages));
   plugins.gulp.watch(paths.gifs.src, gifs);
   plugins.gulp.watch(paths.files.src, copyFiles);
   plugins.gulp.watch([paths.htmlIncludes.src, paths.html.src], html);
@@ -39,21 +41,38 @@ function watchFiles() {
     paths.html.src
   ]).on('unlink', (filepath) => delFile(filepath));
 
-  // Следим за изображениями и удаляем соответствующие обработанные файлы в dist/ 
+  // Следим за изображениями и удаляем соответствующие файлы в dist/images и src/imagemin
   plugins.gulp.watch(paths.images.src)
     .on('unlink', (filepath) => {
-      const filePathFromSrc = filepath.replace(/src[\\/]/, '');
-      console.log(filePathFromSrc);
+
+      const srcMinPath = filepath.replace('img', 'images');
+      const srcMinWebpPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.webp');
+      const srcMinAvifPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.avif');
+      const filePathFromSrc = srcMinPath.replace(/src[\\/]/, '');
       const destFilePath = plugins.path.join(paths.dest, filePathFromSrc);
       const destWebpPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.webp');
       const destAvifPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.avif');
-      const srcMinPath = filepath.replace('images', 'imagemin');
-      const srcMinWebpPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.webp');
-      const srcMinAvifPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.avif');
+
       plugins.deleteAsync([srcMinPath, srcMinWebpPath, srcMinAvifPath, destFilePath, destWebpPath, destAvifPath])
         .then(paths => {
           console.log(`Удаленные файлы:\n${paths.join('\n')}`);
         });
+
+
+      // const filePathFromSrc = filepath.replace(/src[\\/]/, '');
+      // console.log(filePathFromSrc);
+      // const destFilePath = plugins.path.join(paths.dest, filePathFromSrc);
+      // const destWebpPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.webp');
+      // const destAvifPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.avif');
+      // const srcMinPath = filepath.replace('img', 'images');
+      // const srcMinWebpPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.webp');
+      // const srcMinAvifPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.avif');
+      // plugins.deleteAsync([srcMinPath, srcMinWebpPath, srcMinAvifPath, destFilePath, destWebpPath, destAvifPath])
+      //   .then(paths => {
+      //     console.log(`Удаленные файлы:\n${paths.join('\n')}`);
+      //   });
+
+
     });
 
   // Удаление файлов и папок
@@ -65,12 +84,22 @@ function watchFiles() {
   }
 }
 
+
+// Копирование без обработки
+const copyAll = plugins.gulp.parallel(
+  copyFiles, 
+  gifs, 
+  copySvg, 
+  copyProcessedImages, 
+  copySvgSprite, 
+  copyFonsts
+);
 // Основные задачи
 export const build = plugins.gulp.series(
   clean,
   createDirs,
   plugins.gulp.parallel(styles, scripts, processImages, html),
-  plugins.gulp.parallel(copyFiles, gifs, copySvg, copyProcessedImages, copySvgSprite, copyFonsts)
+  copyAll
 );
 
 // Основные задачи и наблюдение

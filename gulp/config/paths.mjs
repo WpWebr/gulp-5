@@ -13,18 +13,18 @@ export const paths = {
     dest: `${dest}/js`,
   },
   images: {
-    src: 'src/images/**/*.{jpg,jpeg,png}',
+    src: 'src/img/**/*.{jpg,jpeg,png}',    
+    minDest: 'src/images',
     dest: `${dest}/images`,
-    minDest: 'src/imagemin',
   },
   gifs: {
-    src: 'src/images/**/*.gif',
+    src: 'src/img/**/*.gif',
     dest: `${dest}/images`,
   },
   svg: {
-    src: 'src/images/svg/**/*.svg',
-    spriteSrc: 'src/images/sprite/*.svg',
-    spriteDest: 'src/images/sprite',
+    src: 'src/img/svg/**/*.svg',
+    spriteSrc: 'src/img/sprite/*.svg',
+    spriteDest: 'src/img/sprite',
     dest: `${dest}/images/svg`,
     destSprite: `${dest}/images/sprite`,
   },
@@ -42,10 +42,10 @@ export const paths = {
   },
   fonts: {
     src: 'src/fonts',
-    src_woff: 'src/fonts/fonts_woff',
-    dest: `${dest}/fonts`,
+    src_woff: 'src/fonts/fonts_woff',    
     scssDest: 'src/scss', // Папка для файла _fonts.scss
     scssFile: '_fonts.scss', // Имя SCSS файла для подключения шрифтов
+    dest: `${dest}/fonts`,
   }
 
 }

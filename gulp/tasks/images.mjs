@@ -23,6 +23,9 @@ export async function processImages() {
       interlaced: true
     }))
     .pipe(plugins.gulp.dest(paths.images.minDest));
+    // .pipe(plugins.gulp.src(paths.images.minDest, { encoding: false }))
+    // .pipe(plugins.newer(paths.images.dest))
+    // .pipe(plugins.gulp.dest(paths.images.dest));
 }
 
 // Создание папок src/imagemin и src/images/sprite, если их нет
