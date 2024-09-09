@@ -50,7 +50,7 @@ export async function copySvgSprite() {
   if (plugins.fs.existsSync(spriteFile)) {
     return plugins.gulp.src(spriteFile, { encoding: false })
       .pipe(handleError('CopySvgSprite'))
-      .pipe(plugins.gulp.dest(paths.svg.dest));
+      .pipe(plugins.gulp.dest(paths.svg.destSprite));
   } else {
     plumberError(`Спрайт не найден по адресу: ${spriteFile}. Создать спрайт: gulp svg`);
   }

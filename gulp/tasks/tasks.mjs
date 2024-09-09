@@ -1,5 +1,6 @@
 import { paths } from '../config/paths.mjs'; // пути
 import { plugins } from '../config/plugins.mjs'; // плагины
+
 import { clean } from './del.mjs'; // удаление
 import { copyFiles, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './copy.mjs'; // копирование
 import { fonts, fontsStyle } from './fonts.mjs'; // шрифт
@@ -22,20 +23,28 @@ function watchFiles() {
   plugins.gulp.watch([paths.htmlIncludes.src, paths.html.src], html);
   plugins.gulp.watch(paths.svg.src, copySvg); // Отслеживание изменений SVG файлов
   plugins.gulp.watch(paths.svg.spriteSrc, svgSpr); // Отслеживание изменений SVG для спрайта
-
+  // Следим за папкой с обработанными изображениями
   plugins.gulp.watch(`${paths.images.minDest}/**/*.{jpg,jpeg,png,avif,webp}`)
     .on('change', (filepath) => {
       plugins.gulp.src(filepath, { encoding: false })
         .pipe(plugins.gulp.dest(paths.images.dest));
     });
+  // Следим за папками и удаляем соответствующие файлы и папки в dist/ 
+  plugins.gulp.watch([
+    paths.styles.src,
+    paths.scripts.src,
+    paths.gifs.src,
+    paths.files.src,
+    paths.svg.src,
+    paths.html.src
+  ]).on('unlink', (filepath) => delFile(filepath));
 
-  plugins.gulp.watch([paths.styles.src, paths.scripts.src, paths.gifs.src, paths.files.src, paths.html.src])
-    .on('unlink', (filepath) => delFile(filepath));
-
+  // Следим за изображениями и удаляем соответствующие обработанные файлы в dist/ 
   plugins.gulp.watch(paths.images.src)
     .on('unlink', (filepath) => {
       const filePathFromSrc = filepath.replace(/src[\\/]/, '');
-      const destFilePath = plugins.path.join(dest, filePathFromSrc);
+      console.log(filePathFromSrc);
+      const destFilePath = plugins.path.join(paths.dest, filePathFromSrc);
       const destWebpPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.webp');
       const destAvifPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.avif');
       const srcMinPath = filepath.replace('images', 'imagemin');
@@ -43,14 +52,15 @@ function watchFiles() {
       const srcMinAvifPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.avif');
       plugins.deleteAsync([srcMinPath, srcMinWebpPath, srcMinAvifPath, destFilePath, destWebpPath, destAvifPath])
         .then(paths => {
-          console.log(`Удаленные файлы и папки:\n${paths.join('\n')}`);
+          console.log(`Удаленные файлы:\n${paths.join('\n')}`);
         });
     });
 
+  // Удаление файлов и папок
   function delFile(filepath) {
     filepath = filepath.replace('src', paths.dest);
     plugins.deleteAsync(filepath).then(paths => {
-      console.log(`Удаленные файлы и папки:\n${paths.join('\n')}`);
+      console.log(`Удаленные файлы:\n${paths.join('\n')}`);
     });
   }
 }
@@ -70,5 +80,5 @@ export const dev = plugins.gulp.series(build, plugins.gulp.parallel(watchFiles, 
 export const svg = plugins.gulp.series(createDirs, svgSpr, copySvgSprite);
 
 // Шрифт 
-export {fonts} // конвертация и стили
-export {fontsStyle} // стили без конвертации
+export { fonts } // конвертация и стили
+export { fontsStyle } // стили без конвертации

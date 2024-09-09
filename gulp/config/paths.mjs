@@ -26,6 +26,7 @@ export const paths = {
     spriteSrc: 'src/images/sprite/*.svg',
     spriteDest: 'src/images/sprite',
     dest: `${dest}/images/svg`,
+    destSprite: `${dest}/images/sprite`,
   },
   files: {
     src: 'src/files/**/*',
