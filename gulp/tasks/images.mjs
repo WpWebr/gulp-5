@@ -4,7 +4,13 @@ import { handleError } from './errors.mjs';
 
 // Обработка изображений (кроме GIF) и сохранение в папку src/imagemin
 export async function processImages() {
-  await createDirs();
+
+  // Создание папки src/imagemin, если её нет
+  // await createDirs();
+  if (!plugins.fs.existsSync(paths.images.minDest)) {
+    plugins.mkdir(paths.images.minDest, { recursive: true });
+  }
+
 
   return plugins.gulp.src(paths.images.src, { encoding: false })
     .pipe(handleError('Images'))
@@ -23,9 +29,9 @@ export async function processImages() {
       interlaced: true
     }))
     .pipe(plugins.gulp.dest(paths.images.minDest));
-    // .pipe(plugins.gulp.src(paths.images.minDest, { encoding: false }))
-    // .pipe(plugins.newer(paths.images.dest))
-    // .pipe(plugins.gulp.dest(paths.images.dest));
+  // .pipe(plugins.gulp.src(paths.images.minDest, { encoding: false }))
+  // .pipe(plugins.newer(paths.images.dest))
+  // .pipe(plugins.gulp.dest(paths.images.dest));
 }
 
 // Создание папок src/imagemin и src/images/sprite, если их нет

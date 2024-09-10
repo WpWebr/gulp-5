@@ -68,7 +68,6 @@
 │   │   ├── html.mjs               # - HTML
 │   │   ├── images.mjs             # - img
 │   │   ├── js.mjs                 # - JS
-│   │   ├── scripts.mjs            # - JS
 │   │   ├── scss.mjs               # - SCSS
 │   │   ├── serve.mjs              # сервер
 │   │   ├── svg.mjs                # создание спрайта с .svg файлов
@@ -102,7 +101,7 @@
 ├── .gitignore                    # игнорируемые файлы для Git
 |
 ├── gulpfile.js                   # файл с настройками Gulp
-├── package-lock.json             # "системный"
+├── package-lock.json             # "системный" - создается автоматически
 ├── package.json                  # файл с настройками сборки и установленными пакетами
 └── README.md                     # документация сборки
 ```

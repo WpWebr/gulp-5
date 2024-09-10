@@ -19,7 +19,7 @@ function watchFiles() {
   plugins.gulp.watch(paths.scripts.src, scripts);
   // Следим за добавлением изображений - обрабатываем и добавляем соответствующие файлы в dist/images и src/imagemin
   // plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
-  plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages));
+  plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
   plugins.gulp.watch(paths.gifs.src, gifs);
   plugins.gulp.watch(paths.files.src, copyFiles);
   plugins.gulp.watch([paths.htmlIncludes.src, paths.html.src], html);
@@ -41,7 +41,7 @@ function watchFiles() {
     paths.html.src
   ]).on('unlink', (filepath) => delFile(filepath));
 
-  // Следим за изображениями и удаляем соответствующие файлы в dist/images и src/imagemin
+  // При удалении изображений удаляем соответствующие файлы в dist/images и src/imagemin
   plugins.gulp.watch(paths.images.src)
     .on('unlink', (filepath) => {
 
@@ -106,7 +106,7 @@ export const build = plugins.gulp.series(
 export const dev = plugins.gulp.series(build, plugins.gulp.parallel(watchFiles, serve));
 
 // Отдельная задача для работы со спрайтом SVG
-export const svg = plugins.gulp.series(createDirs, svgSpr, copySvgSprite);
+export const svg = svgSpr;
 
 // Шрифт 
 export { fonts } // конвертация и стили

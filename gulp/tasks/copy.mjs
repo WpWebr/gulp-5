@@ -1,6 +1,8 @@
 import { paths } from '../config/paths.mjs';
 import { plugins } from '../config/plugins.mjs';
+import { setings } from '../config/setings.mjs';
 import { handleError, plumberError } from './errors.mjs';
+
 
 // Копирование файлов без изменений
 export function copyFiles() {
@@ -28,8 +30,8 @@ export async function copySvg() {
   }
 }
 
-
-export function copyFonsts() {// копируем шрифты
+// Копируем шрифты
+export function copyFonsts() {
   // ищем файлы шрифтов .woff и .woff2
   return plugins.gulp.src(`${paths.fonts.src_woff}/*{.woff,.woff2}`, { encoding: false })
     .pipe(plugins.newer(paths.fonts.dest))
@@ -47,14 +49,28 @@ export function copyProcessedImages() {
 
 // Копирование спрайта в dist
 export async function copySvgSprite() {
-  const spriteFile = `${paths.svg.spriteDest}/symbol/sprite.svg`;
-  if (plugins.fs.existsSync(spriteFile)) {
-    return plugins.gulp.src(spriteFile, { encoding: false })
-      .pipe(handleError('CopySvgSprite'))
-      .pipe(plugins.gulp.dest(paths.svg.destSprite));
+
+  if (setings.sprite) {
+    // Создание папки src/images/sprite, если её нет
+    if (!plugins.fs.existsSync(paths.svg.spriteDest)) {
+      plugins.mkdir(paths.svg.spriteDest, { recursive: true });
+    }
+
+    const spriteFile = `${paths.svg.spriteDest}/sprite/${setings.spriteName}`;
+
+    console.log(spriteFile);
+
+    if (plugins.fs.existsSync(spriteFile)) {
+      return plugins.gulp.src(spriteFile, { encoding: false })
+        .pipe(handleError('CopySvgSprite'))
+        .pipe(plugins.gulp.dest(paths.svg.destSprite));
+    } else {
+      plumberError(`Спрайт не найден. Для создания поместите .svg в папку: ${paths.svg.spriteDest}. Создать спрайт: gulp svg`);
+    }
   } else {
-    plumberError(`Спрайт не найден по адресу: ${spriteFile}. Создать спрайт: gulp svg`);
+    console.log(`Создание спрайта отключено в файле gulp/config/setings.mjs (sprite: 0)`);
   }
+
 }
 
 

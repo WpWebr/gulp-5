@@ -14,3 +14,4 @@ export function scripts() {
     .pipe(plugins.gulp.dest(paths.scripts.dest))
     .pipe(plugins.browserSync.stream());
 }
+ 
