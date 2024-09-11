@@ -10,6 +10,7 @@ import { html } from './html.mjs'; // html
 import { styles } from './styles.mjs'; // scss
 import { scripts } from './js.mjs'; // js
 import { serve } from './serve.mjs'; // браузер
+import { nevProject } from './prodject.mjs'; // новый проект
 // import { watchFiles } from './watch.mjs'; // наблюдение
 // import { watchFiles } from './tasks.mjs'; // наблюдение
 
@@ -96,6 +97,7 @@ const copyAll = plugins.gulp.parallel(
 );
 // Основные задачи
 export const build = plugins.gulp.series(
+  nevProject,
   clean,
   createDirs,
   plugins.gulp.parallel(styles, scripts, processImages, html),
@@ -111,3 +113,4 @@ export const svg = svgSpr;
 // Шрифт 
 export { fonts } // конвертация и стили
 export { fontsStyle } // стили без конвертации
+export { nevProject } // стили без конвертации

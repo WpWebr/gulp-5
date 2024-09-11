@@ -21,12 +21,12 @@ export function gifs() {
 // Копирование SVG-файлов без изменений
 export async function copySvg() {
   const svgFiles = paths.svg.src;
-  if (plugins.fs.existsSync('src/img/svg')) {
+  if (plugins.fs.existsSync(paths.svg.srcFolder)) {
     return plugins.gulp.src(svgFiles, { encoding: false })
       .pipe(handleError('CopySvg'))
       .pipe(plugins.gulp.dest(paths.svg.dest));
   } else {
-    plumberError(`Папка 'src/img/svg' не найдена`);
+    plumberError(`Папка ${paths.svg.srcFolder} не найдена`);
   }
 }
 
@@ -57,8 +57,6 @@ export async function copySvgSprite() {
     }
 
     const spriteFile = `${paths.svg.spriteDest}/sprite/${setings.spriteName}`;
-
-    console.log(spriteFile);
 
     if (plugins.fs.existsSync(spriteFile)) {
       return plugins.gulp.src(spriteFile, { encoding: false })
