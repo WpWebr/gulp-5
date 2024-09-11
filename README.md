@@ -34,11 +34,10 @@
 - `npm run zipB` - создание ZIP архива 
 - `npm run deployB` - отправка проекта по FTP на сервер -->
 
-## СОЗДАНИЕ НОВОГО ПРОЕКТА ( перенос )
-
+## ПЕРЕНОС СБОРКИ
 ### Забираем папки и файлы в новую папку:
+- allprojects
 - gulp
-- src
 - gulpfile.js
 - .gitignore
 - package.json
