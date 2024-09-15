@@ -1,8 +1,15 @@
+const name = 'a'; // название текущего проекта
+const allprojects = 'allprojects'; // новая папка со всеми проектами
+// `allSources` и `sources` - исходники
+const allSources = 'allprojects'; // исходная папка со всеми проектами (из неё берём проект `sources`)
+const sources = 'a'; // папка проекта с которого делаем копию при создании нового проекта
+
 export const setings = {
-  // name:  'a', // название проекта
-  name:  'bv', // название проекта
-  isProduction: false, // false - development, true - production 
-  sources:  'a/src', // исходники для нового проекта
+  name, // название текущего проекта
+  isProduction: false, // false - development, true - production
+  allprojects, // новая папка со всеми проектами
+  allSources, // папка со всеми проектами
+  sources:  `${sources}/src`, // исходники для нового проекта
   dest: 'dist', // папка с результатами
   sprite: 1, // создавать спрайт - команда `gulp svg`
   spriteName: 'sprite.svg', // имя файла спрайта

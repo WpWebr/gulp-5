@@ -24,6 +24,7 @@ import { mkdir } from 'fs/promises';
 import fonter from 'gulp-fonter';
 import ttf2woff2 from 'gulp-ttf2woff2';
 import notifier from 'node-notifier';
+import webpack from 'webpack-stream';
 
 const sass = gulpSass(dartSass);
 const server = browserSync.create();
@@ -54,5 +55,6 @@ export const plugins = {
   fonter,
   ttf2woff2,
   notifier,
+  webpack,
 };
  

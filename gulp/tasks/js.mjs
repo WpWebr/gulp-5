@@ -7,10 +7,18 @@ import { handleError } from './errors.mjs';
 export function scripts() {
   return plugins.gulp.src(paths.scripts.src, { sourcemaps: !setings.isProduction })
     .pipe(handleError('Scripts'))
-    .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.init()))
-    .pipe(plugins.concat('main.min.js'))
-    .pipe(plugins.gulpIf(setings.isProduction, plugins.uglify()))
-    .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.write('.')))
+    .pipe(plugins.webpack({
+      mode: 'development',
+      output: {
+        filename: 'app.min.js',
+      }
+    }))
+
+    // .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.init()))
+    // .pipe(plugins.concat('app.min.js'))
+    // .pipe(plugins.gulpIf(setings.isProduction, plugins.uglify()))
+    // .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.write('.')))
+
     .pipe(plugins.gulp.dest(paths.scripts.dest))
     .pipe(plugins.browserSync.stream());
 }

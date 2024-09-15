@@ -9,7 +9,7 @@ export function handleError(task) {
       sound: 'Basso'
     })
   });
-}
+} 
 // Обработка ошибок console и Windows
 export function plumberError(message, title = 'Error') {
   const addError = { 

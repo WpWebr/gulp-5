@@ -11,13 +11,14 @@ import { styles } from './styles.mjs'; // scss
 import { scripts } from './js.mjs'; // js
 import { serve } from './serve.mjs'; // браузер
 import { nevProject } from './prodject.mjs'; // новый проект
+import { info } from './info.mjs'; // новый проект
 // import { watchFiles } from './watch.mjs'; // наблюдение
 // import { watchFiles } from './tasks.mjs'; // наблюдение
 
 // Отслеживание изменений и удалений
 function watchFiles() {
   plugins.gulp.watch(paths.styles.src, styles);
-  plugins.gulp.watch(paths.scripts.src, scripts);
+  plugins.gulp.watch(paths.scripts.watch, scripts);
   // Следим за добавлением изображений - обрабатываем и добавляем соответствующие файлы в dist/images и src/imagemin
   // plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
   plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
@@ -101,7 +102,8 @@ export const build = plugins.gulp.series(
   clean,
   createDirs,
   plugins.gulp.parallel(styles, scripts, processImages, html),
-  copyAll
+  copyAll,
+  info
 );
 
 // Основные задачи и наблюдение

@@ -1,12 +1,14 @@
 import { setings } from './setings.mjs';
 
-const src = `allprojects/${setings.name}/src` // папка с исходниками
+const src = `${setings.allprojects}/${setings.name}/src` // папка с исходниками
 
-const dest = `allprojects/${setings.name}/${setings.dest}`; // папка с результатами
+const dest = `${setings.allprojects}/${setings.name}/${setings.dest}`; // папка с результатами
 
 export const paths = {
-  prodject: `allprojects/${setings.name}`,
-  allProdjects: `allprojects`,
+  prodject: `${setings.allprojects}/${setings.name}`,
+  allProdjects: setings.allprojects,
+  allSources: setings.allSources,
+  sources: setings.sources,
   dest: dest,
   src: src,
   styles: {
@@ -14,7 +16,8 @@ export const paths = {
     dest: `${dest}/css`,
   },
   scripts: {
-    src: `${src}/js/**/*.js`,
+    src: `${src}/js/app.js`,
+    watch: `${src}/js/**/*.{mjs,js}`,
     dest: `${dest}/js`,
   },
   images: {
