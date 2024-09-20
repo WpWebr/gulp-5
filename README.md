@@ -29,7 +29,7 @@ const sources = 'a'; // папка проекта с которого делае
 
 ### Создания спрайта
 - .svg для спрайта в папке `allprojects/(название проекта)/src/img/sprite`
-- настройки файле `gulp/config/setings.mjs`:
+- настройки в файле `gulp/config/setings.mjs`:
 ```
   sprite: 1, // создавать спрайт - команда `gulp svg`
   spriteName: 'sprite.svg', // имя файла спрайта
@@ -243,13 +243,13 @@ dist/
 package-lock.json
 ``` 
 - создаём `gulpfile.js`
-- разобраться подробнее с сожданием задач [здесь](https://rufri.ru/sovremennaja-cborka-gulp-dlja-veb-razrabotki/)
+- разобраться подробнее с созданием задач [здесь](https://rufri.ru/sovremennaja-cborka-gulp-dlja-veb-razrabotki/)
 
 - создаём основную структуру проэкта: (подробнее см. выше) 
 ```
 # Папка проекта
+├── allprojects
 ├── gulp
-├── src
 ├──.gitignore                     # файл для Git - за чем не следит Git
 ├── gulpfile.js                   # файл с настройками Gulp
 ├── package.json                  # файл с настройками сборки и установленными пакетами
