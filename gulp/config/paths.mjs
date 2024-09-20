@@ -12,7 +12,8 @@ export const paths = {
   dest: dest,
   src: src,
   styles: {
-    src: `${src}/scss/**/*.scss`,
+    src: `${src}/scss/**/style.scss`,
+    watch: `${src}/scss/**/*.scss`,
     dest: `${dest}/css`,
   },
   scripts: {
@@ -23,6 +24,7 @@ export const paths = {
   images: {
     src: `${src}/img/**/*.{jpg,jpeg,png}`,    
     minDest: `${src}/images`,
+    srcDest: `${src}/images/**/*`,
     dest: `${dest}/images`,
   },
   gifs: {

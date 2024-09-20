@@ -6,6 +6,7 @@ import { handleError } from './errors.mjs';
 export function html() {
   return plugins.gulp.src(paths.html.src)
     .pipe(handleError('HTML'))
+    .pipe(plugins.replace(/@img\//g, './images/'))
     .pipe(plugins.cheerio({
       run: function ($) {
         $('img').each(function () {

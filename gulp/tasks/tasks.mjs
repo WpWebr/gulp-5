@@ -17,7 +17,7 @@ import { info } from './info.mjs'; // новый проект
 
 // Отслеживание изменений и удалений
 function watchFiles() {
-  plugins.gulp.watch(paths.styles.src, styles);
+  plugins.gulp.watch(paths.styles.watch, styles);
   plugins.gulp.watch(paths.scripts.watch, scripts);
   // Следим за добавлением изображений - обрабатываем и добавляем соответствующие файлы в dist/images и src/imagemin
   // plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
@@ -35,7 +35,7 @@ function watchFiles() {
     });
   // Следим за папками и удаляем соответствующие файлы и папки в dist/ 
   plugins.gulp.watch([
-    paths.styles.src,
+    paths.styles.watch,
     paths.scripts.src,
     paths.gifs.src,
     paths.files.src,
@@ -101,7 +101,8 @@ export const build = plugins.gulp.series(
   nevProject,
   clean,
   createDirs,
-  plugins.gulp.parallel(styles, scripts, processImages, html),
+  plugins.gulp.parallel(styles, scripts, html),
+  processImages,
   copyAll,
   info
 );
@@ -115,4 +116,5 @@ export const svg = svgSpr;
 // Шрифт 
 export { fonts } // конвертация и стили
 export { fontsStyle } // стили без конвертации
-export { nevProject } // стили без конвертации
+// export { nevProject } // 
+export {processImages}

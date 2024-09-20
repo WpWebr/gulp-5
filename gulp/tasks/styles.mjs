@@ -8,11 +8,33 @@ import { handleError } from './errors.mjs';
 export function styles() {
   return plugins.gulp.src(paths.styles.src, { sourcemaps: !setings.isProduction })
     .pipe(handleError('Styles'))
-    .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.init()))
+    // .pipe(plugins.replace(/@img\//g, '../images/')) // ???
+    // .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.init()))
     .pipe(plugins.sass().on('error', plugins.sass.logError))
-    .pipe(plugins.autoprefixer())
-    .pipe(plugins.gulpIf(setings.isProduction, plugins.cleanCSS()))
-    .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.write('.')))
+    // .pipe(plugins.sass({
+    //   outputStyle: 'expanded'
+    // }))
+    // .pipe(plugins.cssMediaQueries())// ???
+    .pipe(plugins.webpcss({
+      webpClass: '.webp',
+      noWebpClass: '.no-webp'
+    }))
+    .pipe(plugins.autoprefixer({
+      grid: true,
+      overrideBrowserslist: ['last 3 versions'],
+      cascade: true
+    }))
+    .pipe(plugins.gulp.dest(paths.styles.dest))
+    .pipe(plugins.cleanCSS())
+
+    
+
+    // .pipe(plugins.gulpIf(setings.isProduction, plugins.cleanCSS()))
+    // .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.write('.')))
+
+    .pipe(plugins.rename({
+      extname: '.min.css'
+    }))
     .pipe(plugins.gulp.dest(paths.styles.dest))
     .pipe(plugins.browserSync.stream());
-}
+} 

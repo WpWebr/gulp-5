@@ -14,6 +14,9 @@ export const setings = {
   sprite: 1, // создавать спрайт - команда `gulp svg`
   spriteName: 'sprite.svg', // имя файла спрайта
   spriteDelAtribut: 1, // удаление атрибутов .svg для спрайта (fill,stroke,style)
+  avif: 0, // создавать .avif
+  webp: 1, // создавать .webp
+  imagemin: 1, // сжимать фото
 }
 
 // const src = `project/src/${setings.name}/` // папка с исходниками

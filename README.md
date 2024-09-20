@@ -2,7 +2,7 @@
 
 ### Создание/перключение между верстками
 - Проекты верстки можно создавать без перенесения всей сборки
-- все настройки файле `gulp/config/setings.mjs`:
+- настройки файле `gulp/config/setings.mjs`:
 ```
 const name = 'a'; // название текущего проекта
 const allprojects = 'allprojects'; // новая папка со всеми проектами
@@ -16,6 +16,27 @@ const sources = 'a'; // папка проекта с которого делае
 - результат в `allprojects/(ваше название)/dist`
 - для переключения на другую верстку задайте её название переменной `name: (название)`- верстка запустится с соответствующих исходников `allprojects/(название)/src`
 - можно создавать новую папку со всеми проектами - переменная `allprojects` в которую будет реренесён проект `allSources`/`sources`
+
+### Обработка изображений
+- исходные изображения в папке `allprojects/(название проекта)/src/img`
+- настройки файле `gulp/config/setings.mjs`:
+```
+  avif: 0, // создавать .avif
+  webp: 1, // создавать .webp
+  imagemin: 1, // сжимать фото
+```
+- обработанные изображения в папке `allprojects/(название проекта)/src/images` (переносятся в `allprojects/(название проекта)/dist/images`)
+
+### Создания спрайта
+- .svg для спрайта в папке `allprojects/(название проекта)/src/img/sprite`
+- настройки файле `gulp/config/setings.mjs`:
+```
+  sprite: 1, // создавать спрайт - команда `gulp svg`
+  spriteName: 'sprite.svg', // имя файла спрайта
+  spriteDelAtribut: 1, // удаление атрибутов .svg для спрайта (fill,stroke,style)
+```
+- готовый спрайт в папке `allprojects/(название проекта)/src/img/sprite/sprite` (переносятся в `allprojects/(название проекта)/dist/images/sprite`)
+- инструкция для спрайта в папке `allprojects/(название проекта)/src/img/sprite/stack`
 
 ## Команды запуска:
 
@@ -167,7 +188,7 @@ const sources = 'a'; // папка проекта с которого делае
 - `npm rm --global gulp` - удаляем глобально
 - `npm i gulp-cli -g`    - устанавливаем глобально
 
-### Настройки VSC
+### Настройки VS Code
 
 - открываем терминал
 - Выберите профиль по умолчанию
@@ -180,9 +201,9 @@ const sources = 'a'; // папка проекта с которого делае
 - прописываем:
 ```
 "path-autocomplete.pathMappings": {
-"@img": "${folder}/src/images", // alias for images
-"@scss": "${folder}/src/scss", // alias for scss
-"@js": "${folder}/src/js", // alias for js
+"@img": "${folder}/src/images", // псевдоним для изображений
+"@scss": "${folder}/src/scss", // псевдоним для scss
+"@js": "${folder}/src/js", // псевдоним для js
 },
 ```
 - теперь например `@img` будет заменяться на `./src/images`
