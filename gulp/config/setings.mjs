@@ -1,6 +1,7 @@
 const name = 'a'; // название текущего проекта
-const allprojects = 'allprojects'; // новая папка со всеми проектами
-// `allSources` и `sources` - исходники
+const allprojects = 'allprojects'; // новая папка со всеми текущими проектами
+
+// `allSources` и `sources` - исходники для новрго проекта
 const allSources = 'allprojects'; // исходная папка со всеми проектами (из неё берём проект `sources`)
 const sources = 'a'; // папка проекта с которого делаем копию при создании нового проекта
 
@@ -17,6 +18,11 @@ export const setings = {
   avif: 0, // создавать .avif
   webp: 1, // создавать .webp
   imagemin: 1, // сжимать фото
+  // При создании изображений .avif и .webp создаётся и тег "picture"
+  extensions: ['.png','.jpg'], // для каких файлов создаем 'picture'
+  noPicture : ['no-picture'],  // если находим этот класс для тега 'img', то не создаем 'picture' (можно ставить несколько классов)
+  noPictureDel : true, // удалять классы прописанные в `noPicture`?
+  collapseHTML: 1, // сжать HTML
 }
 
 // const src = `project/src/${setings.name}/` // папка с исходниками

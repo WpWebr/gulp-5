@@ -11,7 +11,7 @@ function avif(done) {
   if (setings.avif) {
     return plugins.gulp.src(paths.images.src, { encoding: false })
       .pipe(handleError('Images'))
-      .pipe(plugins.newer(paths.images.minDest))
+      // .pipe(plugins.newer(paths.images.minDest))
       .pipe(plugins.avif())
       .pipe(plugins.gulp.dest(paths.images.minDest));
   }
@@ -22,7 +22,7 @@ function webp(done) {
   if (setings.webp) {
     return plugins.gulp.src(paths.images.src, { encoding: false })
       .pipe(handleError('Images'))
-      .pipe(plugins.newer(paths.images.minDest))
+      // .pipe(plugins.newer(paths.images.minDest))
       .pipe(plugins.webp())
       .pipe(plugins.gulp.dest(paths.images.minDest));
   }

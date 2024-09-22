@@ -28,6 +28,14 @@ import webpack from 'webpack-stream';
 import rename from 'gulp-rename'; // переименование файлов
 import webpcss from 'gulp-webpcss'; // вывод .webp изображений
 import cssMediaQueries from 'group-css-media-queries'; // групировка медиа запросов
+import fileInclude from 'gulp-file-include'; // сборка HTML
+import htmlmin from 'gulp-htmlmin'           // Сжатие HTML
+import pictureHTML from 'gulp-picture-html';  // Контейнер _picture_ для .webp формата картинок
+import formatHtml from 'gulp-format-html' // разжатие/форматирование
+import versionNumber from 'gulp-version-number';   // Динамическая версия файла для .js, .css
+
+
+
 
 const sass = gulpSass(dartSass);
 const server = browserSync.create();
@@ -62,5 +70,10 @@ export const plugins = {
   rename,
   webpcss,
   cssMediaQueries,
+  fileInclude,
+  htmlmin,
+  pictureHTML,
+  formatHtml,
+  versionNumber,
 };
  

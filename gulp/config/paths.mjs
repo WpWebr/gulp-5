@@ -44,13 +44,14 @@ export const paths = {
     dest: `${dest}/files`,
   },
   html: {
-    src: `${src}/**/*.html`,
+    src: `${src}/*.html`,
+    watch: `${src}/**/*.html`,
     dest: `${dest}`,
   },
-  htmlIncludes: {
-    src: `${src}/html/**/*.html`,
-    dest: `${dest}`,
-  },
+  // htmlIncludes: {
+  //   src: `${src}/html/**/*.html`,
+  //   dest: `${dest}`,
+  // },
   fonts: {
     src: `${src}/fonts`,
     src_woff: `${src}/fonts/fonts_woff`,    

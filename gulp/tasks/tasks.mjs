@@ -24,7 +24,8 @@ function watchFiles() {
   plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
   plugins.gulp.watch(paths.gifs.src, gifs);
   plugins.gulp.watch(paths.files.src, copyFiles);
-  plugins.gulp.watch([paths.htmlIncludes.src, paths.html.src], html);
+  // plugins.gulp.watch([paths.htmlIncludes.src, paths.html.src], html);
+  plugins.gulp.watch(paths.html.watch, html);
   plugins.gulp.watch(paths.svg.src, copySvg); // Отслеживание изменений SVG файлов
   plugins.gulp.watch(paths.svg.spriteSrc, svgSpr); // Отслеживание изменений SVG для спрайта
   // Следим за папкой с обработанными изображениями

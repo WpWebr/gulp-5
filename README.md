@@ -5,8 +5,9 @@
 - настройки файле `gulp/config/setings.mjs`:
 ```
 const name = 'a'; // название текущего проекта
-const allprojects = 'allprojects'; // новая папка со всеми проектами
-// `allSources` и `sources` - исходники
+const allprojects = 'allprojects'; // новая папка со всеми текущими проектами
+
+// `allSources` и `sources` - исходники для новрго проекта
 const allSources = 'allprojects'; // исходная папка со всеми проектами (из неё берём проект `sources`)
 const sources = 'a'; // папка проекта с которого делаем копию при создании нового проекта
 ``` 
@@ -26,6 +27,36 @@ const sources = 'a'; // папка проекта с которого делае
   imagemin: 1, // сжимать фото
 ```
 - обработанные изображения в папке `allprojects/(название проекта)/src/images` (переносятся в `allprojects/(название проекта)/dist/images`)
+
+### Добавляем тег `picture`
+- При создании изображений .avif и .webp создаётся и тег "picture"
+- настройки файле `gulp/config/setings.mjs`:
+```
+  extensions: ['.png','.jpg'], // для каких файлов создаем 'picture'
+  noPicture : ['no-picture'],  // если находим этот класс для тега 'img', то не создаем 'picture' (можно ставить несколько классов)
+  noPictureDel : true // удалять классы прописанные в `noPicture`?
+``` 
+### Использование изображений .webp в CSS
+- проверка поддержания браузером формата .webp
+- в JS прописываем:
+```
+// Проверка поддержки webp
+export function isWebp() {
+  function testWebP(callback) {
+    var webP = new Image();
+    webP.onload = webP.onerror = function () {
+      callback(webP.height == 2);
+    };
+    webP.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
+  }
+  // Добавление класса для HTML
+  testWebP(function (support) {
+    if (support == true) {
+      document.documentElement.classList.add('webp');
+    }
+  });
+}
+```
 
 ### Создания спрайта
 - .svg для спрайта в папке `allprojects/(название проекта)/src/img/sprite`
