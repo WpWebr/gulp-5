@@ -30,7 +30,7 @@ const sources = 'a'; // папка проекта с которого делае
 
 ### Добавляем тег `picture`
 - При создании изображений .avif и .webp создаётся и тег "picture"
-- настройки файле `gulp/config/setings.mjs`:
+- настройки в файле `gulp/config/setings.mjs`:
 ```
   extensions: ['.png','.jpg'], // для каких файлов создаем 'picture'
   noPicture : ['no-picture'],  // если находим этот класс для тега 'img', то не создаем 'picture' (можно ставить несколько классов)
@@ -56,6 +56,16 @@ export function isWebp() {
     }
   });
 }
+```
+- Скрипт выше добавляет класс `webp` к тегу `html`
+- в CSS добаляется стиль для .webp 
+- Например:
+```
+.webp body { background-image: url(../images/name.webp); }
+```
+- настройки в файле `gulp/config/setings.mjs`:
+```
+webpCSS: true, // поддержка .webp в CSS
 ```
 
 ### Создания спрайта

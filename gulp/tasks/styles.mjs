@@ -15,10 +15,12 @@ export function styles() {
     //   outputStyle: 'expanded'
     // }))
     // .pipe(plugins.cssMediaQueries())// ???
-    .pipe(plugins.webpcss({
+
+    // поддержка .webp для CSS
+    .pipe(plugins.gulpIf(setings.webpCSS, plugins.webpcss({
       webpClass: '.webp',
-      noWebpClass: '.no-webp'
-    }))
+      // noWebpClass: '.no-webp'
+    })))
     .pipe(plugins.autoprefixer({
       grid: true,
       overrideBrowserslist: ['last 3 versions'],
@@ -26,8 +28,6 @@ export function styles() {
     }))
     .pipe(plugins.gulp.dest(paths.styles.dest))
     .pipe(plugins.cleanCSS())
-
-    
 
     // .pipe(plugins.gulpIf(setings.isProduction, plugins.cleanCSS()))
     // .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.write('.')))

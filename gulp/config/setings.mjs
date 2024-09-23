@@ -22,7 +22,8 @@ export const setings = {
   extensions: ['.png','.jpg'], // для каких файлов создаем 'picture'
   noPicture : ['no-picture'],  // если находим этот класс для тега 'img', то не создаем 'picture' (можно ставить несколько классов)
   noPictureDel : true, // удалять классы прописанные в `noPicture`?
-  collapseHTML: 1, // сжать HTML
+  collapseHTML: 0, // сжать HTML
+  webpCSS: 1, // поддержка .webp в CSS (если JS добавил слиль 'wemp' к <html> - см. README.md)
 }
 
 // const src = `project/src/${setings.name}/` // папка с исходниками
