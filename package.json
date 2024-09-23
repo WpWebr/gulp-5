@@ -24,6 +24,7 @@
     "gulp-file-include": "^2.3.0",
     "gulp-fonter": "^0.3.0",
     "gulp-format-html": "^3.0.0",
+    "gulp-group-css-media-queries": "^1.2.2",
     "gulp-html-replace": "^1.6.2",
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
@@ -47,6 +48,7 @@
     "node-notifier": "^10.0.1",
     "path": "^0.12.7",
     "sass": "^1.77.8",
+    "through2": "^4.0.2",
     "webp-converter": "^2.2.3",
     "webpack": "^5.94.0",
     "webpack-stream": "^7.0.0"

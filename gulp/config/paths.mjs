@@ -12,7 +12,7 @@ export const paths = {
   dest: dest,
   src: src,
   styles: {
-    src: `${src}/scss/**/style.scss`,
+    src: `${src}/scss/style.scss`,
     watch: `${src}/scss/**/*.scss`,
     dest: `${dest}/css`,
   },

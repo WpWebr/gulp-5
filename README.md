@@ -79,6 +79,18 @@ webpCSS: true, // поддержка .webp в CSS
 - готовый спрайт в папке `allprojects/(название проекта)/src/img/sprite/sprite` (переносятся в `allprojects/(название проекта)/dist/images/sprite`)
 - инструкция для спрайта в папке `allprojects/(название проекта)/src/img/sprite/stack`
 
+### Обработка CSS (stules.mjs)
+- Компиляция SCSS в CSS
+- замена `@img/` на `../images/`
+- в CSS добаляется стиль для .webp (см. "Использование изображений .webp в CSS" )
+- вендорные префиксы
+- групировка медиа запросов
+- сжатие - настройки в файле `gulp/config/setings.mjs`:
+```
+noCleanCSSfile: 1, // создавать не сжатый файл style.css
+```
+- сжатый файл `style.min.css`
+
 ## Команды запуска:
 
 ### режим по умолчанию

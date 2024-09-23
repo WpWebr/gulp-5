@@ -24,6 +24,7 @@ export const setings = {
   noPictureDel : true, // удалять классы прописанные в `noPicture`?
   collapseHTML: 0, // сжать HTML
   webpCSS: 1, // поддержка .webp в CSS (если JS добавил слиль 'wemp' к <html> - см. README.md)
+  noCleanCSSfile: 1, // создавать не сжатый файл style.css
 }
 
 // const src = `project/src/${setings.name}/` // папка с исходниками
