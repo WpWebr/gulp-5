@@ -43,7 +43,7 @@ const sources = 'a'; // папка проекта с которого делае
 // Проверка поддержки webp
 export function isWebp() {
   function testWebP(callback) {
-    var webP = new Image();
+    const webP = new Image();
     webP.onload = webP.onerror = function () {
       callback(webP.height == 2);
     };

@@ -1,5 +1,6 @@
 import { paths } from '../config/paths.mjs'; // пути
 import { plugins } from '../config/plugins.mjs'; // плагины
+import { setings } from '../config/setings.mjs';
 
 import { clean } from './del.mjs'; // удаление
 import { copyFiles, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './copy.mjs'; // копирование
@@ -41,7 +42,7 @@ function watchFiles() {
     paths.gifs.src,
     paths.files.src,
     paths.svg.src,
-    paths.html.src
+    paths.html.watch
   ]).on('unlink', (filepath) => delFile(filepath));
 
   // При удалении изображений удаляем соответствующие файлы в dist/images и src/imagemin
@@ -80,7 +81,7 @@ function watchFiles() {
 
   // Удаление файлов и папок
   function delFile(filepath) {
-    filepath = filepath.replace('src', paths.dest);
+    filepath = filepath.replace('src', setings.dest);
     plugins.deleteAsync(filepath).then(paths => {
       console.log(`Удаленные файлы:\n${paths.join('\n')}`);
     });
