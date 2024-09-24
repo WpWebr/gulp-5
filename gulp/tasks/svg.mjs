@@ -4,8 +4,9 @@ import { setings } from '../config/setings.mjs';
 import { handleError, plumberError } from './errors.mjs';
 
 // Обработка SVG и создание спрайта
-export async function svgSpr() {
-  if (setings.sprite) {
+export function svgSpr(done) {
+
+  if (setings.sprite && !plugins.fs.existsSync(paths.svg.sprite)) {
 
     // Создание папки src/images/sprite, если её нет
     if (!plugins.fs.existsSync(paths.svg.spriteDest)) {
@@ -20,7 +21,7 @@ export async function svgSpr() {
         if (files.length) {
           return plugins.gulp.src(paths.svg.spriteSrc)
             .pipe(handleError('SVG'))
-            
+
             .pipe(plugins.gulpIf(setings.spriteDelAtribut, plugins.cheerio({
               run: ($) => {
                 $('[fill]').removeAttr('fill');
@@ -29,18 +30,7 @@ export async function svgSpr() {
               },
               parserOptions: { xmlMode: true }
             })))
-
             .pipe(plugins.replace('&gt;', '>'))
-
-            // .pipe(plugins.svgSprite({
-            //   mode: {
-            //     symbol: {
-            //       sprite: `../sprite/${setings.spriteName}`, // Имя файла спрайта
-            //       example: true // превью-инструкция
-            //     }
-            //   }
-            // }))
-
             .pipe(plugins.svgSprite({
               mode: {
                 stack: {
@@ -50,15 +40,15 @@ export async function svgSpr() {
               }
             }))
             .pipe(plugins.gulp.dest(paths.svg.spriteDest));
-          // .pipe(plugins.browserSync.stream());
         } else {
           // directory appears to be empty
-          plumberError(`Не найдены .svg для спрайта в ${paths.svg.spriteDest} `);
+          plumberError(`Для создания спрайта поместите .svg в папку: ${paths.svg.spriteDest}. Создать спрайт: gulp svg`, 'svgSpr');
         }
       }
     });
-  } else {
-    plumberError(`Для создания спрайта в файле gulp/config/setings.mjs установите sprite: 1`);
-  }
 
+  } else if(!setings.sprite){
+    console.log(`Создания спрайта отключено. Для создания в файле gulp/config/setings.mjs установите sprite: 1`, 'svgSpr');
+  }
+  done();
 }

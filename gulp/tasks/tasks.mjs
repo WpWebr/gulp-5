@@ -2,7 +2,7 @@ import { paths } from '../config/paths.mjs'; // пути
 import { plugins } from '../config/plugins.mjs'; // плагины
 import { setings } from '../config/setings.mjs';
 
-import { clean } from './del.mjs'; // удаление
+import { clean, cleanSprite } from './del.mjs'; // удаление
 import { copyFiles, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './copy.mjs'; // копирование
 import { fonts, fontsStyle } from './fonts.mjs'; // шрифт
 import { processImages, createDirs } from './images.mjs'; // img
@@ -13,15 +13,12 @@ import { scripts } from './js.mjs'; // js
 import { serve } from './serve.mjs'; // браузер
 import { nevProject } from './prodject.mjs'; // новый проект
 import { info } from './info.mjs'; // новый проект
-// import { watchFiles } from './watch.mjs'; // наблюдение
-// import { watchFiles } from './tasks.mjs'; // наблюдение
 
 // Отслеживание изменений и удалений
 function watchFiles() {
   plugins.gulp.watch(paths.styles.watch, styles);
   plugins.gulp.watch(paths.scripts.watch, scripts);
-  // Следим за добавлением изображений - обрабатываем и добавляем соответствующие файлы в dist/images и src/imagemin
-  // plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
+  // Следим за добавлением изображений - обрабатываем и добавляем соответствующие файлы в dist/img и src/img_min
   plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
   plugins.gulp.watch(paths.gifs.src, gifs);
   plugins.gulp.watch(paths.files.src, copyFiles);
@@ -48,37 +45,49 @@ function watchFiles() {
   // При удалении изображений удаляем соответствующие файлы в dist/images и src/imagemin
   plugins.gulp.watch(paths.images.src)
     .on('unlink', (filepath) => {
-      const srcMinPath = filepath.replace('img', 'images');
+
+      const srcImgPath = filepath.replace('images', 'aa/img_min');
+      const srcMinPath = filepath.replace('images', 'aa/img');
       const srcMinWebpPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.webp');
       const srcMinAvifPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.avif');
-      const destFilePath = srcMinPath.replace(/src/, setings.dest);
+      const destFilePath = filepath.replace(replaceSlash(paths.src), replaceSlash(paths.dest));
       const destWebpPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.webp');
       const destAvifPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.avif');
 
-      plugins.deleteAsync([srcMinPath, srcMinWebpPath, srcMinAvifPath, destFilePath, destWebpPath, destAvifPath])
+      plugins.deleteAsync([srcImgPath, srcMinPath, srcMinWebpPath, srcMinAvifPath, destFilePath, destWebpPath, destAvifPath])
         .then(paths => {
           console.log(`Удаленные изображения:\n${paths.join('\n')}`);
         });
 
     });
 
+  // Замена '\' на '/'
+  function replaceSlash(stroke) {
+    return stroke.replace(/\//g, '\\');
+  }
+
   // Удаление файлов и папок
   function delFile(filepath) {
     filepath = filepath.replace('src', setings.dest);
-    plugins.deleteAsync(filepath).then(paths => {
-      console.log(`Удаленные файлы:\n${paths.join('\n')}`);
-    });
+    if (filepath.length > 0) {
+      plugins.deleteAsync(filepath).then(paths => {
+        console.log(`Удаленные файлы:\n${paths.join('\n')}`);
+      });
+    } else {
+      console.log(`Файлы не найдены:\n${paths.join('\n')}`);
+    }
+
   }
 }
 
 
 // Копирование без обработки
 const copyAll = plugins.gulp.parallel(
-  copyFiles, 
-  gifs, 
-  copySvg, 
-  copyProcessedImages, 
-  copySvgSprite, 
+  copyFiles,
+  gifs,
+  copySvg,
+  copyProcessedImages,
+  copySvgSprite,
   copyFonsts
 );
 // Основные задачи
@@ -88,6 +97,7 @@ export const build = plugins.gulp.series(
   createDirs,
   plugins.gulp.parallel(styles, scripts, html),
   processImages,
+  svgSpr,
   copyAll,
   info
 );
@@ -95,11 +105,11 @@ export const build = plugins.gulp.series(
 // Основные задачи и наблюдение
 export const dev = plugins.gulp.series(build, plugins.gulp.parallel(watchFiles, serve));
 
-// Отдельная задача для работы со спрайтом SVG
-export const svg = svgSpr;
+// Задача для работы со спрайтом SVG
+export const svg = plugins.gulp.series(cleanSprite, svgSpr);
 
 // Шрифт 
 export { fonts } // конвертация и стили
 export { fontsStyle } // стили без конвертации
 // export { nevProject } // 
-export {processImages}
+export { processImages }

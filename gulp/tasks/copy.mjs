@@ -19,7 +19,7 @@ export function gifs() {
 }
 
 // Копирование SVG-файлов без изменений
-export async function copySvg() {
+export function copySvg(done) {
   const svgFiles = paths.svg.src;
   if (plugins.fs.existsSync(paths.svg.srcFolder)) {
     return plugins.gulp.src(svgFiles, { encoding: false })
@@ -28,6 +28,7 @@ export async function copySvg() {
   } else {
     plumberError(`Папка ${paths.svg.srcFolder} не найдена`);
   }
+  done();
 }
 
 // Копируем шрифты
@@ -39,16 +40,24 @@ export function copyFonsts() {
     .pipe(plugins.gulp.dest(paths.fonts.dest));
 }
 
-// Копирование обработанных изображений из src/imagemin в dist/images
-export function copyProcessedImages() {
-  return plugins.gulp.src(`${paths.images.minDest}/**/*.{jpg,jpeg,png,avif,webp}`, { encoding: false })
-    // .pipe(handleError('CopyProcessedImages'))
+// Копирование обработанных изображений из src/img и src/img_min в dist/images
+export const copyProcessedImages = plugins.gulp.series(copyImg, copyImgMin);
+
+function copyImg() {
+  return plugins.gulp.src(paths.images.srcDest, { encoding: false })
+    .pipe(handleError('CopyProcessedImages'))
+    .pipe(plugins.newer(paths.images.dest))
+    .pipe(plugins.gulp.dest(paths.images.dest));
+}
+function copyImgMin() {
+  return plugins.gulp.src(paths.images.imgMinSrc, { encoding: false })
+    .pipe(handleError('CopyProcessedImages'))
     .pipe(plugins.newer(paths.images.dest))
     .pipe(plugins.gulp.dest(paths.images.dest));
 }
 
 // Копирование спрайта в dist
-export async function copySvgSprite() {
+export function copySvgSprite(done) {
 
   if (setings.sprite) {
     // Создание папки src/images/sprite, если её нет
@@ -62,13 +71,14 @@ export async function copySvgSprite() {
       return plugins.gulp.src(spriteFile, { encoding: false })
         .pipe(handleError('CopySvgSprite'))
         .pipe(plugins.gulp.dest(paths.svg.destSprite));
-    } else {
-      plumberError(`Спрайт не найден. Для создания поместите .svg в папку: ${paths.svg.spriteDest}. Создать спрайт: gulp svg`);
-    }
+    } 
+    // else {
+    //   plumberError(`Для создания спрайта поместите .svg в папку: ${paths.svg.spriteDest}. Создать спрайт: gulp svg`, 'copySvgSprite');
+    // }
   } else {
-    console.log(`Создание спрайта отключено в файле gulp/config/setings.mjs (sprite: 0)`);
+    console.log(`Создание спрайта отключено в файле gulp/config/setings.mjs (sprite: 0)`, 'copySvgSprite');
   }
-
+  done();
 }
 
 

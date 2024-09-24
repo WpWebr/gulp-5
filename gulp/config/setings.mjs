@@ -17,7 +17,7 @@ export const setings = {
   spriteDelAtribut: 1, // удаление атрибутов .svg для спрайта (fill,stroke,style)
   avif: 0, // создавать .avif
   webp: 1, // создавать .webp
-  imagemin: 1, // сжимать фото
+  imagemin: 1, // сжимать изображения
   // При создании изображений .avif и .webp создаётся и тег "picture"
   extensions: ['.png','.jpg'], // для каких файлов создаем 'picture'
   noPicture : ['no-picture'],  // если находим этот класс для тега 'img', то не создаем 'picture' (можно ставить несколько классов)

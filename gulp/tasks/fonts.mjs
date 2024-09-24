@@ -30,7 +30,7 @@ export async function fonts(done) {
 }
 
 // Функция проверки наличия файлов с несколькими расширениями в папке и выводом ошибки // возвращает true|false
-function checkFilesExistence(folderPath, fileExtensions) {
+export function checkFilesExistence(folderPath, fileExtensions) {
   const fullPath = plugins.path.resolve(folderPath); //полный путь к папке
   // Проверяем, существует ли папка
   if (plugins.fs.existsSync(fullPath)) {
