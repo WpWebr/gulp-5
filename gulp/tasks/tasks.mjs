@@ -48,34 +48,17 @@ function watchFiles() {
   // При удалении изображений удаляем соответствующие файлы в dist/images и src/imagemin
   plugins.gulp.watch(paths.images.src)
     .on('unlink', (filepath) => {
-
       const srcMinPath = filepath.replace('img', 'images');
       const srcMinWebpPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.webp');
       const srcMinAvifPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.avif');
-      const filePathFromSrc = srcMinPath.replace(/src[\\/]/, '');
-      const destFilePath = plugins.path.join(paths.dest, filePathFromSrc);
+      const destFilePath = srcMinPath.replace(/src/, setings.dest);
       const destWebpPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.webp');
       const destAvifPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.avif');
 
       plugins.deleteAsync([srcMinPath, srcMinWebpPath, srcMinAvifPath, destFilePath, destWebpPath, destAvifPath])
         .then(paths => {
-          console.log(`Удаленные файлы:\n${paths.join('\n')}`);
+          console.log(`Удаленные изображения:\n${paths.join('\n')}`);
         });
-
-
-      // const filePathFromSrc = filepath.replace(/src[\\/]/, '');
-      // console.log(filePathFromSrc);
-      // const destFilePath = plugins.path.join(paths.dest, filePathFromSrc);
-      // const destWebpPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.webp');
-      // const destAvifPath = destFilePath.replace(/\.(jpg|jpeg|png)$/, '.avif');
-      // const srcMinPath = filepath.replace('img', 'images');
-      // const srcMinWebpPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.webp');
-      // const srcMinAvifPath = srcMinPath.replace(/\.(jpg|jpeg|png)$/, '.avif');
-      // plugins.deleteAsync([srcMinPath, srcMinWebpPath, srcMinAvifPath, destFilePath, destWebpPath, destAvifPath])
-      //   .then(paths => {
-      //     console.log(`Удаленные файлы:\n${paths.join('\n')}`);
-      //   });
-
 
     });
 

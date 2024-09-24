@@ -4,7 +4,6 @@ import { setings } from '../config/setings.mjs';
 import { handleError } from './errors.mjs';
 
 // Обработка изображений (кроме GIF) и сохранение в папку src/images
-
 export const processImages = plugins.gulp.series(imagesDest, imagemin, webp, avif);
 
 function avif(done) {
