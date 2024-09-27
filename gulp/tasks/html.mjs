@@ -34,7 +34,8 @@ export function html() {
     )))
     .pipe(plugins.gulpIf(picture, plugins.formatHtml())) // "разжимаем" (форматируем)
     // END Добавляем <picture>
-    .pipe(plugins.versionNumber({ // версия файлов
+    
+    .pipe(plugins.gulpIf(setings.isBild, plugins.versionNumber({ // версия файлов
       'value': '%DT%',
       'append': {
         'key': '_v',
@@ -48,7 +49,7 @@ export function html() {
         'file': 'gulp/version.json'
       }
     }
-    ))
+    )))
     // Cжимаем
     .pipe(plugins.gulpIf(setings.collapseHTML, plugins.htmlmin({
       collapseWhitespace: true,
@@ -57,7 +58,7 @@ export function html() {
     // END Cжимаем
 
     .pipe(plugins.gulp.dest(paths.html.dest))
-    .pipe(plugins.browserSync.stream());
+    .pipe(plugins.server.stream());
 }
 
 

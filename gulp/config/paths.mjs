@@ -15,7 +15,7 @@ export const paths = {
     src: `${src}/scss/style.scss`,
     watch: `${src}/scss/**/*.scss`,
     dest: `${dest}/css`,
-  },
+  }, 
   scripts: {
     src: `${src}/js/app.js`,
     watch: `${src}/js/**/*.{mjs,js}`,

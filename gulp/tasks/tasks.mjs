@@ -10,10 +10,10 @@ import { svgSpr } from './svg.mjs'; // svg
 import { html } from './html.mjs'; // html
 import { styles } from './styles.mjs'; // scss
 import { scripts } from './js.mjs'; // js
-import { serve } from './serve.mjs'; // браузер
+import { server } from './server.mjs'; // браузер
 import { nevProject } from './prodject.mjs'; // новый проект
 import { info } from './info.mjs'; // новый проект
-
+ 
 // Отслеживание изменений и удалений
 function watchFiles() {
   plugins.gulp.watch(paths.styles.watch, styles);
@@ -103,7 +103,9 @@ export const build = plugins.gulp.series(
 );
 
 // Основные задачи и наблюдение
-export const dev = plugins.gulp.series(build, plugins.gulp.parallel(watchFiles, serve));
+// export const dev = plugins.gulp.series(build, plugins.gulp.parallel(watchFiles, server));
+export const dev = plugins.gulp.series(build, server, watchFiles);
+
 
 // Задача для работы со спрайтом SVG
 export const svg = plugins.gulp.series(cleanSprite, svgSpr);

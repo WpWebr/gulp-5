@@ -40,8 +40,6 @@ import versionNumber from 'gulp-version-number';   // Динамическая �
 import through2 from 'through2';   // Динамическая версия файла для .js, .css
 
 
-
-
 const sass = gulpSass(dartSass);
 const server = browserSync.create();
 
@@ -58,7 +56,7 @@ export const plugins = {
   avif,
   newer,
   gulpIf,
-  browserSync: server,
+  server,
   deleteAsync,
   plumber,
   notify,

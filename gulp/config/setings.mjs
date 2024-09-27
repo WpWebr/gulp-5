@@ -5,9 +5,11 @@ const allprojects = 'allprojects'; // новая папка со всеми те
 const allSources = 'allprojects'; // исходная папка со всеми проектами (из неё берём проект `sources`)
 const sources = 'a'; // папка проекта с которого делаем копию при создании нового проекта
 
+
 export const setings = {
   name, // название текущего проекта
-  isProduction: false, // false - development, true - production
+  isBuild: process.argv.includes('--build'), // если есть флаг `--build` то - режим `production`
+  ayBuild: false, // ести 'true' то в режиме `development` файлы JS и CSS сжаты и нет `sourcemaps`
   allprojects, // новая папка со всеми проектами
   allSources, // папка со всеми проектами
   sources:  `${sources}/src`, // исходники для нового проекта

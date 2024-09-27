@@ -15,12 +15,13 @@ function cssMedia() {
     cb(null, file);  // Передаём файл дальше в поток
   });
 }
-
+const sourcemaps = !(setings.isBuild || setings.ayBuild);
 
 export function styles() {
-  return plugins.gulp.src(paths.styles.src, { sourcemaps: !setings.isProduction })
+  return plugins.gulp.src(paths.styles.src, { sourcemaps: sourcemaps })
+  // return plugins.gulp.src(paths.styles.src, { sourcemaps: true })
     .pipe(handleError('Styles'))
-    // .pipe(plugins.gulpIf(!setings.isProduction, plugins.sourcemaps.init()))
+    // .pipe(plugins.gulpIf(!setings.isBuild, plugins.sourcemaps.init()))
     .pipe(plugins.sass({ // Компиляция SCSS в CSS
       outputStyle: 'expanded'
     }))
@@ -41,6 +42,6 @@ export function styles() {
     .pipe(plugins.rename({
       extname: '.min.css'
     }))
-    .pipe(plugins.gulp.dest(paths.styles.dest))
-    .pipe(plugins.browserSync.stream());
+    .pipe(plugins.gulp.dest(paths.styles.dest, { sourcemaps: sourcemaps}))
+    .pipe(plugins.server.stream());
 } 
