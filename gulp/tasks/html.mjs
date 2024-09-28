@@ -35,7 +35,7 @@ export function html() {
     .pipe(plugins.gulpIf(picture, plugins.formatHtml())) // "разжимаем" (форматируем)
     // END Добавляем <picture>
     
-    .pipe(plugins.gulpIf(setings.isBild, plugins.versionNumber({ // версия файлов
+    .pipe(plugins.gulpIf(!setings.isBuild, plugins.versionNumber({ // версия файлов
       'value': '%DT%',
       'append': {
         'key': '_v',

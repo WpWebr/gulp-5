@@ -1,4 +1,4 @@
-import { dev, build, fonts, svg, fontsStyle, processImages } from './gulp/tasks/tasks.mjs'; // наблюдение и задачи
+import { dev, build, fonts, svg, fontsStyle, processImages, zip } from './gulp/tasks/tasks.mjs'; // задачи
 
 export { 
   dev,        // Основные задачи с наблюдением
@@ -6,7 +6,8 @@ export {
   fonts,      // Шрифт конвертация и стили 
   fontsStyle, // стили шрифтов без конвертации
   svg,         // Отдельная задача для работы со спрайтом SVG
-  processImages
+  processImages,
+  zip
 };
 
 // Задача по умолчанию

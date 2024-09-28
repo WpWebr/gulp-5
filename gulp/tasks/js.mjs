@@ -3,10 +3,10 @@ import { setings } from '../config/setings.mjs';
 import { plugins } from '../config/plugins.mjs';
 import { handleError } from './errors.mjs';
 
-// Минификация и объединение JS файлов
+// Обработка JS файлов
 export function scripts() {
 
-  const sourcemaps = !(setings.isBuild || setings.ayBuil);
+  const sourcemaps = !(setings.isBuild || setings.ayBuild);
 
   return plugins.gulp.src(paths.scripts.src, { sourcemaps })
     .pipe(handleError('Scripts'))
@@ -16,14 +16,6 @@ export function scripts() {
         filename: 'app.min.js',
       }
     }))
-
-    // .pipe(plugins.gulpIf(!setings.isBuild, plugins.sourcemaps.init()))
-    // .pipe(plugins.concat('app.min.js'))
-    // .pipe(plugins.gulpIf(setings.isBuild, plugins.uglify()))
-    // .pipe(plugins.gulpIf(!setings.isBuild, plugins.sourcemaps.write('.')))
-
     .pipe(plugins.gulp.dest(paths.scripts.dest, { sourcemaps: sourcemaps }))
     .pipe(plugins.server.stream());
-
-
 }

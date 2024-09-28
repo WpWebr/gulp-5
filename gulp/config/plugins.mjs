@@ -38,6 +38,7 @@ import pictureHTML from 'gulp-picture-html';  // Контейнер _picture_ д
 import formatHtml from 'gulp-format-html' // разжатие/форматирование
 import versionNumber from 'gulp-version-number';   // Динамическая версия файла для .js, .css
 import through2 from 'through2';   // Динамическая версия файла для .js, .css
+import zip from 'gulp-zip';   // создание ZIP
 
 
 const sass = gulpSass(dartSass);
@@ -79,5 +80,6 @@ export const plugins = {
   formatHtml,
   versionNumber,
   through2,
+  zip,
 };
  

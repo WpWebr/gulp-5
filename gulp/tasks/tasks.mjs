@@ -12,8 +12,9 @@ import { styles } from './styles.mjs'; // scss
 import { scripts } from './js.mjs'; // js
 import { server } from './server.mjs'; // браузер
 import { nevProject } from './prodject.mjs'; // новый проект
-import { info } from './info.mjs'; // новый проект
- 
+import { info } from './info.mjs'; // информация о запущенном проекте
+import { addZip } from './zip.mjs'; // создание ZIP
+
 // Отслеживание изменений и удалений
 function watchFiles() {
   plugins.gulp.watch(paths.styles.watch, styles);
@@ -81,7 +82,7 @@ function watchFiles() {
 }
 
 
-// Копирование без обработки
+// Копирование
 const copyAll = plugins.gulp.parallel(
   copyFiles,
   gifs,
@@ -92,8 +93,6 @@ const copyAll = plugins.gulp.parallel(
 );
 // Основные задачи
 export const build = plugins.gulp.series(
-  nevProject,
-  clean,
   createDirs,
   plugins.gulp.parallel(styles, scripts, html),
   processImages,
@@ -103,15 +102,23 @@ export const build = plugins.gulp.series(
 );
 
 // Основные задачи и наблюдение
-// export const dev = plugins.gulp.series(build, plugins.gulp.parallel(watchFiles, server));
-export const dev = plugins.gulp.series(build, server, watchFiles);
-
+export const dev = plugins.gulp.series(
+  nevProject,
+  clean, 
+  build, 
+  plugins.gulp.parallel(server, watchFiles),  
+);
 
 // Задача для работы со спрайтом SVG
 export const svg = plugins.gulp.series(cleanSprite, svgSpr);
 
-// Шрифт 
-export { fonts } // конвертация и стили
-export { fontsStyle } // стили без конвертации
-// export { nevProject } // 
+// Создание ZIP
+export const zip = plugins.gulp.series(build, addZip);
+
+export {
+  // Шрифт 
+  fonts, // конвертация и стили
+  fontsStyle, // стили  без конвертации
+}
+
 export { processImages }
