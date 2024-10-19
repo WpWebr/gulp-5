@@ -1,47 +1,43 @@
-import { paths } from '../config/paths.mjs';
-import { plugins } from '../config/plugins.mjs';
-import { setings } from '../config/setings.mjs';
-import { handleError } from './errors.mjs';
-
 // Обёртка group-css-media-queries (cssMediaQueries) 
 // через through2, чтобы можно было использовать в .pipe()
 function cssMedia() {
-  return plugins.through2.obj(function (file, enc, cb) {
+  return add.plugins.through2.obj(function (file, enc, cb) {
     if (file.isBuffer()) {
       let css = file.contents.toString(enc);  // Получаем содержимое файла
-      let processedCss = plugins.cssMediaQueries(css);     // Обрабатываем CSS
+      let processedCss = add.plugins.cssMediaQueries(css);     // Обрабатываем CSS
       file.contents = Buffer.from(processedCss);  // Записываем результат обратно
     }
     cb(null, file);  // Передаём файл дальше в поток
   });
 }
-const sourcemaps = !(setings.isBuild || setings.ayBuild);
+
 
 export function styles() {
-  return plugins.gulp.src(paths.styles.src, { sourcemaps: sourcemaps })
-  // return plugins.gulp.src(paths.styles.src, { sourcemaps: true })
-    .pipe(handleError('Styles'))
-    // .pipe(plugins.gulpIf(!setings.isBuild, plugins.sourcemaps.init()))
-    .pipe(plugins.sass({ // Компиляция SCSS в CSS
+  const sourcemaps = !(add.setFolders.isBuild || add.setings.ayBuild);
+  return add.plugins.gulp.src(add.paths.styles.src, { sourcemaps: sourcemaps })
+  // return add.plugins.gulp.src(add.paths.styles.src, { sourcemaps: true })
+    .pipe(add.handleError('Styles'))
+    // .pipe(add.plugins.gulpIf(!add.setFolders.isBuild, add.plugins.sourcemaps.init()))
+    .pipe(add.plugins.sass({ // Компиляция SCSS в CSS
       outputStyle: 'expanded'
     }))
-    .pipe(plugins.replace(/@img\//g, '../images/'))
+    .pipe(add.plugins.replace(/@img\//g, '../images/'))
     // Поддержка .webp для CSS
-    .pipe(plugins.gulpIf(setings.webpCSS, plugins.webpcss({
+    .pipe(add.plugins.gulpIf(add.setings.webpCSS, add.plugins.webpcss({
       webpClass: '.webp', // класс при поддержке .webp
       // noWebpClass: '.no-webp' // класс если .webp не поддерживается
     })))
-    .pipe(plugins.autoprefixer({
+    .pipe(add.plugins.autoprefixer({
       grid: true,
       overrideBrowserslist: ['last 3 versions'],
       cascade: true
     }))
     .pipe(cssMedia())// групировка медиа запросов
-    .pipe(plugins.gulpIf(setings.noCleanCSSfile, plugins.gulp.dest(paths.styles.dest)))
-    .pipe(plugins.cleanCSS()) // сжатие
-    .pipe(plugins.rename({
+    .pipe(add.plugins.gulpIf(add.setings.noCleanCSSfile, add.plugins.gulp.dest(add.paths.styles.dest))) // сохранить не сжатый файл
+    .pipe(add.plugins.cleanCSS()) // сжатие
+    .pipe(add.plugins.rename({
       extname: '.min.css'
     }))
-    .pipe(plugins.gulp.dest(paths.styles.dest, { sourcemaps: sourcemaps}))
-    .pipe(plugins.server.stream());
+    .pipe(add.plugins.gulp.dest(add.paths.styles.dest, { sourcemaps: sourcemaps}))
+    .pipe(add.plugins.server.stream());
 } 

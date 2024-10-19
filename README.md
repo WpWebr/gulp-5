@@ -25,6 +25,18 @@ _Шрифт конверируется отдельно. Если он уже с
 - `npm run zip` или `gulp zip --build`
 (создается в папке проекта)
 
+### отправка по FTP
+- `npm run ftp` или `gulp ftp --build`
+- настройки в файле `gulp/config/ftp.mjs`:
+```
+export const configFTP = {
+  host: '', // Адрес FTP сервера
+  user: '', // Имя ползователя
+  passpord: '', // Пароль
+  parallel: 5 // Кол-во одновременных потоков
+}
+```
+
 ## Настройки сборки
 
 ### Создание/перключение между верстками (setings.mjs)
@@ -301,6 +313,7 @@ package-lock.json
 node_modules/
 allprojects/
 version.json
+gulp/config/ftp.mjs
 ```
 или берём [тут](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore)
 - и дополняем как минимум:
@@ -308,6 +321,7 @@ version.json
 allprojects/
 package-lock.json
 version.json
+gulp/config/ftp.mjs
 ``` 
 - создаём `gulpfile.js`
 - разобраться подробнее с созданием задач [здесь](https://rufri.ru/sovremennaja-cborka-gulp-dlja-veb-razrabotki/)
@@ -345,7 +359,7 @@ version.json
 - теперь например при написании `@img` будет работать поиск по `./allprojects/a/images` и выводить подсказки имеющихся файлов
 
 ### Установка плагинов ( npm i -D < название >)
-(все плагины подключаются в файле gulp/config/plugins.mjs c последующим импортом)
+(все плагины подключаются в файле `gulp/config/plugins.mjs` c последующим импортом)
 - gulp                     // Галп
 - del                      // для удаления/очистки
 - gulp-file-include        // для разбиения HTML на компоненты
@@ -392,9 +406,19 @@ version.json
 - gulp-if                        // Условное ветвление
 - gulp-htmlmin                   // Сжатие HTML и др.
 
+### Удаление плагинов
+- Эта команда удаляет пакет из папки `node_modules`, в файле `package.json` информация о данном пакете остается: 
+```
+npm uninstall < название >
+```
+- Чтобы удалить информацию также и из `package.json`, применяется флаг `--save`:
+```
+npm uninstall < название > --save
+```
+
 ### Подключение модулей js
 #### Подключение слайдера Swiper из npm-modules
-- npm i -D swiper                // установка Swiper - [сайт](https://swiperjs.com/get-started)
+- npm i -D swiper  // установка Swiper - [сайт](https://swiperjs.com/get-started)
 
 
 <!-- 
@@ -435,7 +459,19 @@ version.json
 
 ## ПРОБЛЕМЫ
 - пока не заметил :)
+## РЕШЕННЫЕ ПРОБЛЕМЫ
+- проблема: 
+плагин `browser-sync` не открывает браузер по умолчанию
+- решение:
+в Windows - `Пуск / Система / Дополнительные параметры системы / Переменные среды` 
+Ищем переменную `PATH` - Изменить
+И добавляем `C:\Windows\System32`
+Должно работать :)
 
+- проблема:
+при создании нового проекта и `avif: true, // создавать .avif` в `setings.mjs` возникает ошибка
+- решение:
+удалить в новых исходниках папку `src/aa` и перзапустить :)
 
 
 

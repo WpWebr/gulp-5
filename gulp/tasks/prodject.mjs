@@ -1,31 +1,48 @@
-import { paths } from '../config/paths.mjs';
 import { plugins } from '../config/plugins.mjs';
-import { handleError } from './errors.mjs';
 
+// export async function nevProject(){
+//   return add.plugins.gulp.series(nevProjectSrc, nevSetings);
+// }
+export const nevProject = plugins.gulp.series(nevProjectSrc, nevSetings);
 // Создание нового проекта
-export function nevProject(done) {
+function nevProjectSrc(done) {
 
-  // Создание новой папки со всеми проектами 
+  // Создание новой папки для проектов
   // и перенос в неё исходного проекта
- if (paths.allProdjects !== paths.allSources) {
-    // Создание новой исходной папки и нового проекта из исходников
-    plugins.mkdir(paths.allProdjects, { recursive: true });
+  if (!add.plugins.fs.existsSync(add.paths.allProdjects)) {
+    // Создание новой папки
+    // add.plugins.mkdir(add.paths.allProdjects, { recursive: true });
+    // Запись в `.gitignore` для исключения папки `add.paths.allProdjects` 
+    // const content = `\n${add.paths.allProdjects}/`;
+    // add.plugins.fs.appendFile('.gitignore', content, (err) => {
+    //   if (err) {
+    //     plumberError(err, `Error (nevProject) записи в .gitignore`);
+    //     return;
+    //   }
+    // });
+    // Перенос исходников
+    return add.plugins.gulp.src(`${add.paths.allSources}/${add.paths.sources}/src/**/*`, { encoding: false })
+      .pipe(add.handleError('nevProject_Folder'))
+      .pipe(add.plugins.gulp.dest(add.paths.src));
 
-    return plugins.gulp.src(`${paths.allSources}/${paths.sources}/**/*`, { encoding: false })
-      .pipe(handleError('nevProject_Folder'))
-      .pipe(plugins.gulp.dest(paths.src));
-
-  } else if (!plugins.fs.existsSync(paths.prodject)) {
+  } else if (!add.plugins.fs.existsSync(add.paths.prodject)) {
     // Создание нового проекта из исходников
-    return plugins.gulp.src(`${paths.allProdjects}/${paths.sources}/**/*`, { encoding: false })
-      .pipe(handleError('nevProject'))
-      .pipe(plugins.gulp.dest(paths.src));
-      
-  } else {    
+    return add.plugins.gulp.src(`${add.paths.allSources}/${add.paths.sources}/src/**/*`, { encoding: false })
+      .pipe(add.handleError('nevProject_Folder'))
+      .pipe(add.plugins.gulp.dest(add.paths.src));
+
+  } else {
     done();
   }
- 
-  
 }
-
+// Перенос папки setings
+function nevSetings(done) {
+  if (!add.plugins.fs.existsSync(`${add.paths.prodject}/setings`)) {
+    // return add.plugins.gulp.src(`${add.paths.allSources}/${add.paths.sources}/setings/**/*`, { encoding: false })
+    return add.plugins.gulp.src(`gulp/setings/*`, { encoding: false })
+      .pipe(add.handleError('nevSetings'))
+      .pipe(add.plugins.gulp.dest(`${add.paths.prodject}/setings`));
+  }
+  done();
+}
 

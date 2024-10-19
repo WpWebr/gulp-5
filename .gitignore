@@ -1,4 +1,7 @@
 package-lock.json
 node_modules/
-allprojects/
 version.json
+gulp/config/ftp.mjs
+**/setings/ftp.mjs
+all/
+

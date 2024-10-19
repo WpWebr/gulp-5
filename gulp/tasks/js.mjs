@@ -1,21 +1,16 @@
-import { paths } from '../config/paths.mjs';
-import { setings } from '../config/setings.mjs';
-import { plugins } from '../config/plugins.mjs';
-import { handleError } from './errors.mjs';
-
 // Обработка JS файлов
 export function scripts() {
 
-  const sourcemaps = !(setings.isBuild || setings.ayBuild);
+  const sourcemaps = !(add.setFolders.isBuild || add.setings.ayBuild);
 
-  return plugins.gulp.src(paths.scripts.src, { sourcemaps })
-    .pipe(handleError('Scripts'))
-    .pipe(plugins.webpack({
+  return add.plugins.gulp.src(add.paths.scripts.src, { sourcemaps })
+    .pipe(add.handleError('Scripts'))
+    .pipe(add.plugins.webpack({
       mode: sourcemaps ? 'development' : 'production',
       output: {
         filename: 'app.min.js',
       }
     }))
-    .pipe(plugins.gulp.dest(paths.scripts.dest, { sourcemaps: sourcemaps }))
-    .pipe(plugins.server.stream());
+    .pipe(add.plugins.gulp.dest(add.paths.scripts.dest, { sourcemaps: sourcemaps }))
+    .pipe(add.plugins.server.stream());
 }

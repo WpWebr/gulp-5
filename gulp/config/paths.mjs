@@ -1,16 +1,23 @@
-import { setings } from './setings.mjs';
+// import { setings } from '../setings/setings.mjs';
+import { setFolders } from './setings_folders.mjs'; // папки текущего проекта
 
-const src = `${setings.allprojects}/${setings.name}/src` // папка с исходниками
+const prodject = `${setFolders.allprojects}/${setFolders.name}`;// текущий проект
+const src = `${prodject}/src` // папка с исходниками
+// const dest = `${prodject}/${setings.dest}`; // папка с результатами
+const dest = `${prodject}/dist`; // папка с результатами
 
-const dest = `${setings.allprojects}/${setings.name}/${setings.dest}`; // папка с результатами
+const spriteName = 'sprite.svg'; // название спрайта
 
 export const paths = {
-  prodject: `${setings.allprojects}/${setings.name}`,
-  allProdjects: setings.allprojects,
-  allSources: setings.allSources,
-  sources: setings.sources,
-  dest: dest,
-  src: src,
+  prodject,// текущий проект
+  allProdjects: setFolders.allprojects,// текущие проекты
+  allSources: setFolders.allSources,// отсюда копируем sources
+  sources: setFolders.sources,// копируемый проект
+  dest,// теукущие результататы 
+  src,// теукущие исходники
+  setings: `${prodject}/setings/setings.mjs`,// настройки
+  ftp: `${prodject}/setings/ftp.mjs`,// настройки ftp
+  spriteName,
   styles: {
     src: `${src}/scss/style.scss`,
     watch: `${src}/scss/**/*.scss`,
@@ -38,7 +45,9 @@ export const paths = {
     srcFolder: `${src}/images/svg/`,
     spriteSrc: `${src}/images/sprite/*.svg`,
     spriteDest: `${src}/images/sprite`,
-    sprite: `${src}/images/sprite/sprite/${setings.spriteName}`,
+    // sprite: `${src}/images/sprite/sprite/${setings.spriteName}`,
+    sprite: `${src}/images/sprite/sprite/${spriteName}`,
+    // sprite: `${src}/images/sprite/sprite/sprite.svg`,
     dest: `${dest}/images/svg`,
     destSprite: `${dest}/images/sprite`,
   },

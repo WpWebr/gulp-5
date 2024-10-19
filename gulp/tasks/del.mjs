@@ -1,10 +1,7 @@
-import { paths } from '../config/paths.mjs';
-import { plugins } from '../config/plugins.mjs';
-
 export function clean() {
-  return plugins.deleteAsync(paths.dest);
+  return add.plugins.deleteAsync(add.paths.dest);
 }
 // удаление спрайта
 export function cleanSprite() {
-  return plugins.deleteAsync(paths.svg.sprite);
+  return add.plugins.deleteAsync(add.paths.svg.sprite);
 }

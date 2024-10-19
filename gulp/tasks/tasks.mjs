@@ -1,6 +1,9 @@
 import { paths } from '../config/paths.mjs'; // пути
 import { plugins } from '../config/plugins.mjs'; // плагины
-import { setings } from '../config/setings.mjs';
+import { setings } from '../setings/setings.mjs';
+
+
+
 
 import { clean, cleanSprite } from './del.mjs'; // удаление
 import { copyFiles, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './copy.mjs'; // копирование
@@ -14,6 +17,31 @@ import { server } from './server.mjs'; // браузер
 import { nevProject } from './prodject.mjs'; // новый проект
 import { info } from './info.mjs'; // информация о запущенном проекте
 import { addZip } from './zip.mjs'; // создание ZIP
+import { deploy } from './ftp.mjs'; // FTP
+
+// глобальная переменная
+globalThis.add = { 
+  paths: paths,
+  plugins: plugins,
+  setings: 7
+};
+
+// Динамический импорт
+const path = '../../all/allprojects/b/setings/setings.mjs';
+import(path).then((module) => {
+  // Присваиваем значение из модуля в глобальную переменную
+  globalThis.add = { setings: module.setings };
+  // console.log(globalThis.add);  // { a: 'значение из модуля' }
+}).catch((err) => {
+  console.error('Ошибка при импорте модуля:', err);
+});
+
+console.log('Сразу:', globalThis.add.setings);  // { a: 'значение из модуля' }
+// Позднее использование глобальной переменной
+setTimeout(() => {
+  console.log('Через 0,5 секунды:', globalThis.add.setings);  // Вывод обновленного значения
+}, 500);
+
 
 // Отслеживание изменений и удалений
 function watchFiles() {
@@ -115,10 +143,16 @@ export const svg = plugins.gulp.series(cleanSprite, svgSpr);
 // Создание ZIP
 export const zip = plugins.gulp.series(build, addZip);
 
+export const ftp = plugins.gulp.series(
+  build, 
+  deploy
+);
+
 export {
+  html,
   // Шрифт 
   fonts, // конвертация и стили
-  fontsStyle, // стили  без конвертации
+  fontsStyle, // стили без конвертации
 }
 
 export { processImages }

@@ -1,41 +1,26 @@
-import { paths } from '../config/paths.mjs';
-import { plugins } from '../config/plugins.mjs';
-import { setings } from '../config/setings.mjs';
-import { handleError } from './errors.mjs';
-
-const picture = setings.avif || setings.webp;
-let pictureSource = [];
-if (setings.avif && setings.webp) {
-  pictureSource = ['.avif', '.webp'];
-} else if (setings.avif) {
-  pictureSource = ['.avif'];
-} else {
-  pictureSource = ['.webp'];
-}
-
-
-
 export function html() {
-  return plugins.gulp.src(paths.html.src)
-    .pipe(handleError('HTML'))
-    .pipe(plugins.fileInclude()) // собираем HTML
-    .pipe(plugins.replace(/@img\//g, './images/'))
-
-    // Добавляем <picture>
-    .pipe(plugins.gulpIf(picture, plugins.htmlmin({ collapseWhitespace: true }))) // сжимаем
-    .pipe(plugins.gulpIf(picture, plugins.pictureHTML( // добавляем <picture>
-      // options:
+  const picture = add.setings.avif || add.setings.webp;
+  let pictureSource;
+  if (add.setings.avif && add.setings.webp) {
+    pictureSource = ['.avif', '.webp'];
+  } else if (add.setings.avif) {
+    pictureSource = ['.avif'];
+  } else {
+    pictureSource = ['.webp'];
+  }
+  return add.plugins.gulp.src(add.paths.html.src)
+    .pipe(add.handleError('HTML'))
+    .pipe(add.plugins.fileInclude()) // собираем HTML
+    .pipe(add.plugins.replace(/@img\//g, 'images/'))
+    .pipe(add.plugins.gulpIf(picture, add.plugins.pictureHTML( // добавляем <picture>
       {
-        extensions: setings.extensions,  // для каких файлов создаем 'picture'
+        extensions: add.setings.extensions,  // для каких файлов создаем 'picture'
         source: pictureSource,  // создаем 'source' с этими форматами      
-        noPicture: setings.noPicture,   // если находим этот класс для тега 'img', то не создаем 'picture' (можно ставить несколько классов)
-        noPictureDel: setings.noPictureDel // удалять классы прописанные в `noPicture`?
+        noPicture: add.setings.noPicture,   // если находим этот класс для тега 'img', то не создаем 'picture' (можно ставить несколько классов)
+        noPictureDel: add.setings.noPictureDel // удалять классы прописанные в `noPicture`?
       }
     )))
-    .pipe(plugins.gulpIf(picture, plugins.formatHtml())) // "разжимаем" (форматируем)
-    // END Добавляем <picture>
-    
-    .pipe(plugins.gulpIf(!setings.isBuild, plugins.versionNumber({ // версия файлов
+    .pipe(add.plugins.gulpIf(!add.setFolders.isBuild, add.plugins.versionNumber({ // версия файлов
       'value': '%DT%',
       'append': {
         'key': '_v',
@@ -50,15 +35,12 @@ export function html() {
       }
     }
     )))
-    // Cжимаем
-    .pipe(plugins.gulpIf(setings.collapseHTML, plugins.htmlmin({
+    .pipe(add.plugins.gulpIf(add.setings.collapseHTML, add.plugins.htmlmin({ // сжимаем
       collapseWhitespace: true,
       removeComments: true, // удалить коменты
     })))
-    // END Cжимаем
-
-    .pipe(plugins.gulp.dest(paths.html.dest))
-    .pipe(plugins.server.stream());
+    .pipe(add.plugins.gulp.dest(add.paths.html.dest))
+    .pipe(add.plugins.server.stream());
 }
 
 
