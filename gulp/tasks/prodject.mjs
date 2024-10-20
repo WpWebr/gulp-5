@@ -13,13 +13,17 @@ function nevProjectSrc(done) {
     // Создание новой папки
     // add.plugins.mkdir(add.paths.allProdjects, { recursive: true });
     // Запись в `.gitignore` для исключения папки `add.paths.allProdjects` 
-    // const content = `\n${add.paths.allProdjects}/`;
-    // add.plugins.fs.appendFile('.gitignore', content, (err) => {
-    //   if (err) {
-    //     plumberError(err, `Error (nevProject) записи в .gitignore`);
-    //     return;
-    //   }
-    // });
+    const nevAllProdjects = add.paths.allProdjects.split(/\//)[0];
+    if (!add.plugins.fs.existsSync(nevAllProdjects)) {
+      const content = `\n/${nevAllProdjects}/`;
+      add.plugins.fs.appendFile('.gitignore', content, (err) => {
+        if (err) {
+          plumberError(err, `Error (nevProjectSrc) записи в .gitignore`);
+          return;
+        }
+      });
+    }
+
     // Перенос исходников
     return add.plugins.gulp.src(`${add.paths.allSources}/${add.paths.sources}/src/**/*`, { encoding: false })
       .pipe(add.handleError('nevProject_Folder'))

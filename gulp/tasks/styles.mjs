@@ -25,7 +25,7 @@ export function styles() {
     // Поддержка .webp для CSS
     .pipe(add.plugins.gulpIf(add.setings.webpCSS, add.plugins.webpcss({
       webpClass: '.webp', // класс при поддержке .webp
-      // noWebpClass: '.no-webp' // класс если .webp не поддерживается
+      noWebpClass: '.no-webp' // класс если .webp не поддерживается
     })))
     .pipe(add.plugins.autoprefixer({
       grid: true,

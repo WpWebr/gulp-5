@@ -28,6 +28,8 @@ _Шрифт конверируется отдельно. Если он уже с
 ### отправка по FTP
 - `npm run ftp` или `gulp ftp --build`
 - настройки в файле `gulp/config/ftp.mjs`:
+- ! не забудте исключите настройки FTP в `.gitignore`: 
+**/setings/ftp.mjs
 ```
 export const configFTP = {
   host: '', // Адрес FTP сервера
