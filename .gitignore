@@ -1,7 +1,7 @@
 package-lock.json
 node_modules/
 version.json
-# ! не забудте исключите настройки FTP:
+# ! не забудьте исключите настройки FTP:
 # **/setings/ftp.mjs
 # здесь папки за которыми не следим
 dist/
