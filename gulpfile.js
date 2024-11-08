@@ -4,7 +4,7 @@ import { setings } from './gulp/setings/setings.mjs'; // настройки по
 import { paths } from './gulp/config/paths.mjs'; // пути
 import { handleError, plumberError } from './gulp/tasks/errors.mjs'; // ошибки
 import { clean, cleanSprite } from './gulp/tasks/del.mjs'; // удаление
-import { copyFiles, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './gulp/tasks/copy.mjs'; // копирование
+import { copyFiles, copyRobots, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './gulp/tasks/copy.mjs'; // копирование
 import { fonts, fontsStyle } from './gulp/tasks/fonts.mjs'; // шрифт
 import { processImages, createDirs } from './gulp/tasks/images.mjs'; // img
 import { svgSpr } from './gulp/tasks/svg.mjs'; // svg
@@ -135,7 +135,8 @@ const zip = plugins.gulp.series(loadModule, build, addZip);
 
 const ftp = plugins.gulp.series(
   loadModule,
-  build, 
+  build,
+  copyRobots,
   deploy
 );
 

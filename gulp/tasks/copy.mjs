@@ -7,6 +7,13 @@ export function copyFiles() {
     .pipe(add.plugins.gulp.dest(add.paths.files.dest));
 }
 
+// Копирование robots.txt
+export function copyRobots() {
+  return add.plugins.gulp.src(add.paths.robots.src)
+    .pipe(add.handleError('copyRobots'))
+    .pipe(add.plugins.gulp.dest(add.paths.dest));
+}
+
 // Копирование GIF-файлов без изменений
 export function gifs() {
   return add.plugins.gulp.src(add.paths.gifs.src, { encoding: false })

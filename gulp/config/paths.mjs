@@ -53,7 +53,11 @@ export const paths = {
   },
   files: {
     src: `${src}/files/**/*`,
+    robots: `${src}/_robots/robots.txt`,
     dest: `${dest}/files`,
+  },
+  robots: {
+    src: `${src}/_robots/robots.txt`,
   },
   html: {
     src: `${src}/*.html`,
