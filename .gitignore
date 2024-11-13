@@ -6,5 +6,3 @@ version.json
 # здесь папки за которыми не следим
 dist/
 /all/
-/app/
-/all/
