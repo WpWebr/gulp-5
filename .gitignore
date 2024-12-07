@@ -1,6 +1,8 @@
 package-lock.json
 node_modules/
 version.json
+# настройки пути к папке текущего проекта
+setings_add.mjs  
 # ! не забудьте исключите настройки FTP:
 # **/setings/ftp.mjs
 # здесь папки за которыми не следим

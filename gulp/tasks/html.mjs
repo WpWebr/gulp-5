@@ -22,6 +22,7 @@ export function html() {
     )))
     .pipe(add.plugins.gulpIf(!add.setFolders.isBuild, add.plugins.versionNumber({ // версия файлов
       'value': '%DT%',
+      // 'value': '%MDS%',
       'append': {
         'key': '_v',
         'cover': 0,

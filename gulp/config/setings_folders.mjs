@@ -1,5 +1,16 @@
-const name = '001_ru_avrin_group'; // название текущего проекта
-const allprojects = 'all/2024'; // папка со всеми текущими проектами
+import { setingsAdd } from './setings_add.mjs'; // настройки пути к папке текущего проекта
+// Код с файла setings_add.mjs :
+// const name = 'source'; // название текущего проекта
+// const allprojects = 'apps/sources'; // папка со всеми текущими проектами
+// export const setingsAdd = {
+//   name,
+//   allprojects,
+// }
+const name = setingsAdd.name; // название текущего проекта
+const allprojects = setingsAdd.allprojects; // папка со всеми текущими проектами
+// или:
+// const name = 'source'; // название текущего проекта
+// const allprojects = 'apps/sources'; // папка со всеми текущими проектами
 
 // `allSources` и `sources` - исходники для нового проекта
 const allSources = 'apps/sources'; // исходная папка (из неё берём проект `sources`)
