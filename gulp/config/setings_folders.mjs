@@ -12,9 +12,12 @@ const allprojects = setingsAdd.allprojects; // папка со всеми тек
 // const name = 'source'; // название текущего проекта
 // const allprojects = 'apps/sources'; // папка со всеми текущими проектами
 
-// `allSources` и `sources` - исходники для нового проекта
-const allSources = 'apps/sources'; // исходная папка (из неё берём проект `sources`)
-const sources = 'source'; // папка проекта (в allSources) с которого делаем копию при создании нового проекта
+// // `allSources` и `sources` - исходники для нового проекта
+// const allSources = 'apps/sources'; // исходная папка (из неё берём проект `sources`)
+// const sources = 'source'; // папка проекта (в allSources) с которого делаем копию при создании нового проекта
+const allSources = setingsAdd.allSources;// исходная папка (из неё берём проект `sources`)
+const sources = setingsAdd.sources; // папка проекта (в allSources) с которого делаем копию при создании нового проекта 
+
 
 export const setFolders = {
   name, // название текущего проекта
