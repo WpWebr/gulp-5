@@ -15,7 +15,7 @@ function cssMedia() {
 export function styles() {
   const sourcemaps = !(add.setFolders.isBuild || add.setings.ayBuild);
   return add.plugins.gulp.src(add.paths.styles.src, { sourcemaps: sourcemaps })
-  // return add.plugins.gulp.src(add.paths.styles.src, { sourcemaps: true })
+    // return add.plugins.gulp.src(add.paths.styles.src, { sourcemaps: true })
     .pipe(add.handleError('Styles'))
     // .pipe(add.plugins.gulpIf(!add.setFolders.isBuild, add.plugins.sourcemaps.init()))
     .pipe(add.plugins.sass({ // Компиляция SCSS в CSS
@@ -38,6 +38,6 @@ export function styles() {
     .pipe(add.plugins.rename({
       extname: '.min.css'
     }))
-    .pipe(add.plugins.gulp.dest(add.paths.styles.dest, { sourcemaps: sourcemaps}))
+    .pipe(add.plugins.gulp.dest(add.paths.styles.dest, { sourcemaps: sourcemaps }))
     .pipe(add.plugins.server.stream());
 } 

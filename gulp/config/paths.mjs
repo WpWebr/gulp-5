@@ -19,17 +19,18 @@ export const paths = {
   ftp: `${prodject}/setings/ftp.mjs`,// настройки ftp
   spriteName,
   styles: {
-    src: `${src}/scss/style.scss`,
+    // src: `${src}/scss/style.scss`,
+    src: `${src}/scss/*.scss`,
     watch: `${src}/scss/**/*.scss`,
     dest: `${dest}/css`,
-  }, 
+  },
   scripts: {
     src: `${src}/js/app.js`,
     watch: `${src}/js/**/*.{mjs,js}`,
     dest: `${dest}/js`,
   },
   images: {
-    src: `${src}/images/**/*.{jpg,jpeg,png}`,    
+    src: `${src}/images/**/*.{jpg,jpeg,png}`,
     minDest: `${src}/aa/img`,
     imgMin: `${src}/aa/img_min`,
     imgMinSrc: `${src}/aa/img_min/**/*`,
@@ -70,7 +71,7 @@ export const paths = {
   // },
   fonts: {
     src: `${src}/fonts`,
-    src_woff: `${src}/fonts/fonts_woff`,    
+    src_woff: `${src}/fonts/fonts_woff`,
     scssDest: `${src}/scss`, // Папка для файла _fonts.scss
     scssFile: `_fonts.scss`, // Имя SCSS файла для подключения шрифтов
     dest: `${dest}/fonts`,
