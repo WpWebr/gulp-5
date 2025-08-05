@@ -57,6 +57,10 @@ export const paths = {
     robots: `${src}/_robots/robots.txt`,
     dest: `${dest}/files`,
   },
+  inc: {
+    src: `${src}/inc/**/*`,
+    dest: `${dest}/inc`,
+  },
   robots: {
     src: `${src}/_robots/robots.txt`,
   },

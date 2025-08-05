@@ -1,10 +1,17 @@
 import { plugins } from '../config/plugins.mjs';
 
-// Копирование файлов без изменений
+// Копирование файлов без изменений (files)
 export function copyFiles() {
   return add.plugins.gulp.src(add.paths.files.src, { encoding: false })
     .pipe(add.handleError('Files'))
     .pipe(add.plugins.gulp.dest(add.paths.files.dest));
+}
+
+// Копирование файлов без изменений (inc)
+export function copyInc() {
+  return add.plugins.gulp.src(add.paths.inc.src, { encoding: false })
+    .pipe(add.handleError('Inc'))
+    .pipe(add.plugins.gulp.dest(add.paths.inc.dest));
 }
 
 // Копирование robots.txt
@@ -77,7 +84,7 @@ function copyImgMin() {
     .pipe(add.plugins.newer(add.paths.images.dest))
     .pipe(add.plugins.gulp.dest(add.paths.images.dest));
 }
- 
+
 // Копирование спрайта в dist
 export function copySvgSprite(done) {
 
@@ -93,7 +100,7 @@ export function copySvgSprite(done) {
       return add.plugins.gulp.src(spriteFile, { encoding: false })
         .pipe(add.handleError('CopySvgSprite'))
         .pipe(add.plugins.gulp.dest(add.paths.svg.destSprite));
-    } 
+    }
     // else {
     //   add.plumberError(`Для создания спрайта поместите .svg в папку: ${add.paths.svg.spriteDest}. Создать спрайт: gulp svg`, 'copySvgSprite');
     // }

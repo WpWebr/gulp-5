@@ -4,7 +4,7 @@ import { setings } from './gulp/setings/setings.mjs'; // настройки по
 import { paths } from './gulp/config/paths.mjs'; // пути
 import { handleError, plumberError } from './gulp/tasks/errors.mjs'; // ошибки
 import { clean, cleanSprite } from './gulp/tasks/del.mjs'; // удаление
-import { copyFiles, copyRobots, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './gulp/tasks/copy.mjs'; // копирование
+import { copyFiles, copyInc, copyRobots, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './gulp/tasks/copy.mjs'; // копирование
 import { fonts, fontsStyle } from './gulp/tasks/fonts.mjs'; // шрифт
 import { processImages, createDirs } from './gulp/tasks/images.mjs'; // img
 import { svgSpr } from './gulp/tasks/svg.mjs'; // svg
@@ -27,7 +27,7 @@ global.add = {
   plumberError  // ошибки
 };
 // Асинхронная задача для динамического импорта модуля с использованием переменного пути
-const loadModule = async function() {
+const loadModule = async function () {
   try {
     const module = await import(`./${paths.setings}`); // Используем переменную для пути
     global.add.setings = module.setings;  // Обновляем глобальную переменную
@@ -43,6 +43,7 @@ function watchFiles() {
   plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
   plugins.gulp.watch(paths.gifs.src, gifs);
   plugins.gulp.watch(paths.files.src, copyFiles);
+  plugins.gulp.watch(paths.files.src, copyInc);
   // plugins.gulp.watch([paths.htmlIncludes.src, paths.html.src], html);
   plugins.gulp.watch(paths.html.watch, html);
   plugins.gulp.watch(paths.svg.src, copySvg); // Отслеживание изменений SVG файлов
@@ -103,6 +104,7 @@ function watchFiles() {
 // Копирование
 const copyAll = plugins.gulp.series(
   copyFiles,
+  copyInc,
   gifs,
   copySvg,
   copyProcessedImages,
@@ -122,9 +124,9 @@ const build = plugins.gulp.series(
 const dev = plugins.gulp.series(
   nevProject,
   loadModule,
-  clean, 
-  build, 
-  plugins.gulp.parallel(server, watchFiles),  
+  clean,
+  build,
+  plugins.gulp.parallel(server, watchFiles),
 );
 
 // Задача для работы со спрайтом SVG
