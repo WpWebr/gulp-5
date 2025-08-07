@@ -19,7 +19,7 @@ import { addZip } from './gulp/tasks/zip.mjs'; // создание ZIP
 import { deploy } from './gulp/tasks/ftp.mjs'; // FTP
 // глобальная переменная
 global.add = {
-  plugins,      // плагины
+  plugins,      // плагины 
   paths,        // пути
   setings,      // настройки
   setFolders,
@@ -43,7 +43,7 @@ function watchFiles() {
   plugins.gulp.watch(paths.images.src, { events: 'add' }, plugins.gulp.series(processImages, copyProcessedImages));
   plugins.gulp.watch(paths.gifs.src, gifs);
   plugins.gulp.watch(paths.files.src, copyFiles);
-  plugins.gulp.watch(paths.files.src, copyInc);
+  plugins.gulp.watch(paths.inc.src, copyInc);
   // plugins.gulp.watch([paths.htmlIncludes.src, paths.html.src], html);
   plugins.gulp.watch(paths.html.watch, html);
   plugins.gulp.watch(paths.svg.src, copySvg); // Отслеживание изменений SVG файлов
@@ -60,6 +60,7 @@ function watchFiles() {
     paths.scripts.src,
     paths.gifs.src,
     paths.files.src,
+    paths.inc.src,
     paths.svg.src,
     paths.html.watch
   ]).on('unlink', (filepath) => delFile(filepath));
