@@ -1,3 +1,5 @@
+import { pathToFileURL } from "url"; // для преобразования путей
+import path from "path"; // для определения абсолютного или относительного пути
 import { plugins } from './gulp/config/plugins.mjs'; // плагины
 import { setFolders } from './gulp/config/setings_folders.mjs'; // папки текущего проекта
 import { setings } from './gulp/setings/setings.mjs'; // настройки по умолчанию
@@ -29,7 +31,15 @@ global.add = {
 // Асинхронная задача для динамического импорта модуля с использованием переменного пути
 const loadModule = async function () {
   try {
-    const module = await import(`./${paths.setings}`); // Используем переменную для пути
+    let modulePath = paths.setings;
+    if (path.isAbsolute(modulePath)) { // если путь абсолютный:
+      modulePath = pathToFileURL(modulePath).href;
+    } else {
+      modulePath = path.resolve(modulePath);
+    }
+    // const module = await import(`./${paths.setings}`); // Используем переменную для пути
+    const module = await import(modulePath); // импорт модуля
+
     global.add.setings = module.setings;  // Обновляем глобальную переменную
   } catch (err) {
     console.error('Ошибка при импорте модуля "setings":', err);

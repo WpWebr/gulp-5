@@ -5,7 +5,6 @@ const prodject = `${setFolders.allprojects}/${setFolders.name}`;// текущи�
 const src = `${prodject}/src` // папка с исходниками
 // const dest = `${prodject}/${setings.dest}`; // папка с результатами
 const dest = `${prodject}/dist`; // папка с результатами
-
 const spriteName = 'sprite.svg'; // название спрайта
 
 export const paths = {
