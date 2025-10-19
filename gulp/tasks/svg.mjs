@@ -18,7 +18,14 @@ export function svgSpr(done) {
         if (files.length) {
           return add.plugins.gulp.src(add.paths.svg.spriteSrc)
             .pipe(handleError('SVG'))
-
+            .pipe(add.plugins.svgmin({
+              js2svg: {
+                // Beutifies the SVG output instead of
+                // stripping all white space.
+                pretty: true,
+                // indent: 2,
+              }
+            }))
             .pipe(add.plugins.gulpIf(add.setings.spriteDelAtribut, add.plugins.cheerio({
               run: ($) => {
                 $('[fill]').removeAttr('fill');
@@ -44,7 +51,7 @@ export function svgSpr(done) {
       }
     });
 
-  } else if(!add.setings.sprite){
+  } else if (!add.setings.sprite) {
     console.log(`Создания спрайта отключено. Для создания в файле ${add.paths.setings} установите sprite: 1`, 'svgSpr');
   }
   done();

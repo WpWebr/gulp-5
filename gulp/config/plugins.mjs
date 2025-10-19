@@ -36,6 +36,8 @@ import log from 'fancy-log';   // вывод сообщений
 import colors from 'ansi-colors';   // добавление цвета в сообщения
 import open from 'open';   // открыть браузер
 import vinylFtp from 'vinyl-ftp';   // FTP
+import svgmin from 'gulp-svgmin';   // сжатие SVG
+
 
 
 const sass = gulpSass(dartSass);
@@ -79,4 +81,5 @@ export const plugins = {
   colors,
   open,
   vinylFtp,
+  svgmin,
 };
