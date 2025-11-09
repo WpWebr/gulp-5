@@ -41,7 +41,7 @@ export function styles() {
     .pipe(add.plugins.rename(function (path) {
       // Проверяем имя исходного файла без расширения
       if (path.basename === 'style-rtl') {
-        // Для style-rtl.scss → style.min-rtl.css
+        // Для style-rtl.css → style.min-rtl.css
         path.basename = 'style.min-rtl';
       } else {
         // Для всех остальных — просто добавляем .min перед .css
