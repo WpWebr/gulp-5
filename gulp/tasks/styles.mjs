@@ -35,8 +35,19 @@ export function styles() {
     .pipe(cssMedia())// групировка медиа запросов
     .pipe(add.plugins.gulpIf(add.setings.noCleanCSSfile, add.plugins.gulp.dest(add.paths.styles.dest))) // сохранить не сжатый файл
     .pipe(add.plugins.cleanCSS()) // сжатие
-    .pipe(add.plugins.rename({
-      extname: '.min.css'
+    // .pipe(add.plugins.rename({
+    //   extname: '.min.css'
+    // }))
+    .pipe(add.plugins.rename(function (path) {
+      // Проверяем имя исходного файла без расширения
+      if (path.basename === 'style-rtl') {
+        // Для style-rtl.scss → style.min-rtl.css
+        path.basename = 'style.min-rtl';
+      } else {
+        // Для всех остальных — просто добавляем .min перед .css
+        path.basename += '.min';
+      }
+      path.extname = '.css';
     }))
     .pipe(add.plugins.gulp.dest(add.paths.styles.dest, { sourcemaps: sourcemaps }))
     .pipe(add.plugins.server.stream());
