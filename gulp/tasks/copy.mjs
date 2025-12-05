@@ -8,10 +8,17 @@ export function copyFiles() {
 }
 
 // Копирование файлов без изменений (inc)
-export function copyInc() {
-  return add.plugins.gulp.src(add.paths.inc.src, { encoding: false })
-    .pipe(add.handleError('Inc'))
-    .pipe(add.plugins.gulp.dest(add.paths.inc.dest));
+export function copyInc(done) {
+  const incFiles = add.paths.inc.src; // исходники (все файлы)
+  const incFolder = add.paths.inc.incFolder; // папка исходников
+  if (add.plugins.fs.existsSync(incFolder)) {
+    return add.plugins.gulp.src(incFiles, { encoding: false })
+      .pipe(add.handleError('CopyInc'))
+      .pipe(add.plugins.gulp.dest(add.paths.inc.dest));
+  } else {
+    add.plumberError(`Папка ${incFolder} не найдена`);
+  }
+  done();
 }
 
 // Копирование robots.txt

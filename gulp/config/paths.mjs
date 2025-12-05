@@ -58,6 +58,7 @@ export const paths = {
   },
   inc: {
     src: `${src}/inc/**/*`,
+    incFolder: `${src}/inc/`,
     dest: `${dest}/inc`,
   },
   robots: {
