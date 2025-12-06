@@ -13,4 +13,5 @@ export const setings = {
   collapseHTML: false, // сжать HTML
   webpCSS: true, // поддержка .webp в CSS (если JS добавил слиль 'wemp' к <html> - см. README.md)
   noCleanCSSfile: false, // создавать не сжатый файл style.css
+  copyAll: ['files', 'inc'] // папки преносимые с исходников (src) без изменения
 }

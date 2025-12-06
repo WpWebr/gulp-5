@@ -1,23 +1,28 @@
 import { plugins } from '../config/plugins.mjs';
 
-// Копирование файлов без изменений (files)
-export function copyFiles() {
-  return add.plugins.gulp.src(add.paths.files.src, { encoding: false })
-    .pipe(add.handleError('Files'))
-    .pipe(add.plugins.gulp.dest(add.paths.files.dest));
-}
+// Копирование файлов без изменений (files,inc)
+export function copyFiles(done) {
 
-// Копирование файлов без изменений (inc)
-export function copyInc(done) {
-  const incFiles = add.paths.inc.src; // исходники (все файлы)
-  const incFolder = add.paths.inc.incFolder; // папка исходников
-  if (add.plugins.fs.existsSync(incFolder)) {
-    return add.plugins.gulp.src(incFiles, { encoding: false })
-      .pipe(add.handleError('CopyInc'))
-      .pipe(add.plugins.gulp.dest(add.paths.inc.dest));
-  } else {
-    add.plumberError(`Папка ${incFolder} не найдена`);
+  const nameFolders = add.setings.copyAll; // ['file', 'inc'] - папки преносимые с исходников (src) без изменения
+
+  if (nameFolders) {
+    nameFolders.forEach(el => {
+
+      const incFolder = `${add.paths.src}/${el}/`; // папка исходников
+      const incFiles = `${add.paths.src}/${el}/**/*`; // исходники (файлы)
+      const incDest = `${add.paths.dest}/${el}/`; // папка назначения (куда)
+      if (add.plugins.fs.existsSync(incFolder)) {
+        return add.plugins.gulp.src(incFiles, { encoding: false })
+          .pipe(add.handleError('CopyFiles'))
+          .pipe(add.plugins.gulp.dest(incDest));
+      } else {
+        add.plumberError(`Папка ${incFolder} не найдена`);
+      }
+
+    });
+
   }
+
   done();
 }
 
