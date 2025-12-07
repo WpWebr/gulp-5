@@ -293,6 +293,8 @@ noCleanCSSfile: 1, // создавать не сжатый файл style.css
 │
 ├── .gitignore                   # игнорируемые файлы для Git
 |
+├── .stylelintrc.json            # файл с настройками Stylelint 
+|
 ├── gulpfile.js                  # файл с настройками Gulp
 ├── package-lock.json            # "системный" - создается автоматически
 ├── package.json                 # файл с настройками сборки и установленными пакетами
@@ -389,27 +391,6 @@ dist/
 └── README.md 
 ```
 
-### Настройки VS Code
-
-- открываем терминал
-- Выберите профиль по умолчанию
-- выбираем PowerShell
-
-#### Плагин для VS Code
-- `Path Autocomplete` - устанавливаем (в VS Code)
-- `F1` ищем `Open Settings (JSON)`
-(пользавательские настройки - settings.json)
-- прописываем:
-```
-"path-autocomplete.pathMappings": {
-"@img": "${folder}/(путь к проекту)/src/images", // псевдоним для изображений
-"@scss": "${folder}/(путь к проекту)/src/scss", // псевдоним для scss
-"@js": "${folder}/(путь к проекту)/src/js", // псевдоним для js
-},
-```
-- "путь к проекту" - по умолчанию это `apps/sources/source`
-- теперь например при написании `@img` будет работать поиск по `./apps/sources/source/images` и выводить подсказки имеющихся файлов
-
 ### Установка плагинов ( npm i -D < название >)
 (все плагины подключаются в файле `gulp/config/plugins.mjs` c последующим импортом)
 - gulp                     // Галп
@@ -458,6 +439,15 @@ dist/
 - gulp-if                        // Условное ветвление
 - gulp-htmlmin                   // Сжатие HTML и др.
 
+#### Плагины для для работы с BEM и сортировкой CSS (+ см. дальше "Настройки VS Code")
+
+- stylelint                        // основной линтер
+- stylelint-config-standard-scss   // стандартные правила для SCSS
+- stylelint-config-prettier-scss   //  совместимость с Prettier
+- stylelint-order                  // сортировка CSS-свойств
+- stylelint-selector-bem-pattern   // проверка BEM-структуры
+
+
 ### Удаление плагинов
 - Эта команда удаляет пакет из папки `node_modules`, в файле `package.json` информация о данном пакете остается: 
 ```
@@ -467,6 +457,118 @@ npm uninstall < название >
 ```
 npm uninstall < название > --save
 ```
+
+### Настройки VS Code
+
+- открываем терминал
+- Выберите профиль по умолчанию
+- выбираем PowerShell
+
+#### Плагины для VS Code
+- `Path Autocomplete` - устанавливаем (в VS Code)
+- `Stylelint` - устанавливаем (в VS Code)
+- `F1` ищем `Open Settings (JSON)`
+(пользавательские настройки - settings.json)
+- прописываем:
+```
+"path-autocomplete.pathMappings": {
+"@img": "${folder}/(путь к проекту)/src/images", // псевдоним для изображений
+"@scss": "${folder}/(путь к проекту)/src/scss", // псевдоним для scss
+"@js": "${folder}/(путь к проекту)/src/js", // псевдоним для js
+},
+"editor.codeActionsOnSave": {
+  "source.fixAll.stylelint": true
+},
+"stylelint.validate": [
+  "css",
+  "scss"
+]
+
+```
+- "путь к проекту" - по умолчанию это `apps/sources/source`
+- теперь например при написании `@img` будет работать поиск по `./apps/sources/source/images` и выводить подсказки имеющихся файлов
+
+#### Создаём конфиг Stylelint
+В корне проекта создаём файл .stylelintrc.json и вставляем следующий конфиг:
+
+```
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-prettier-scss"
+  ],
+  "plugins": [
+    "stylelint-order",
+    "stylelint-selector-bem-pattern"
+  ],
+  "rules": {
+    "plugin/selector-bem-pattern": {
+      "componentName": "[a-z]+(?:-[a-z]+)*",
+      "preset": "bem",
+      "componentSelectors": {
+        "initial": "^\\.{component}(?:__[a-z0-9-]+)?(?:_[a-z0-9-]+)?$"
+      }
+    },
+    "order/properties-order": [
+      [
+        "position",
+        "top",
+        "right",
+        "bottom",
+        "left",
+        "z-index",
+        "display",
+        "flex",
+        "flex-direction",
+        "justify-content",
+        "align-items",
+        "width",
+        "height",
+        "min-width",
+        "max-width",
+        "min-height",
+        "max-height",
+        "margin",
+        "padding",
+        "font",
+        "font-family",
+        "font-size",
+        "font-weight",
+        "line-height",
+        "text-align",
+        "color",
+        "background",
+        "border",
+        "border-radius",
+        "box-shadow",
+        "transition",
+        "transform",
+        "animation"
+      ],
+      {
+        "unspecified": "bottomAlphabetical"
+      }
+    ]
+  }
+}
+
+```
+#### Что делает этот конфиг:
+- BEM-валидация
+- Разрешены классы в формате:
+```
+.block
+.block_mod
+.block__element
+.block__element_mod
+Plain text
+```
+- Запрещены двойные элементы или неправильные модификаторы.
+- Сортировка CSS-свойств:
+  - Свойства упорядочены по логическим группам: layout → box model → typography → visual → animation.
+  - Неопределённые свойства идут в алфавитном порядке внизу.
+  - SCSS-вложенности
+  - Поддерживаются вложенные селекторы с &__element и &_mod.
 
 ### Подключение модулей js
 #### Подключение слайдера Swiper из npm-modules

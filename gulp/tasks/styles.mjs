@@ -11,7 +11,6 @@ function cssMedia() {
   });
 }
 
-
 export function styles() {
   const sourcemaps = !(add.setFolders.isBuild || add.setings.ayBuild);
   return add.plugins.gulp.src(add.paths.styles.src, { sourcemaps: sourcemaps })
