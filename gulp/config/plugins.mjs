@@ -17,7 +17,8 @@ import svgSprite from 'gulp-svg-sprite';
 import replace from 'gulp-replace';
 import path from 'path';
 import fs from 'fs';
-import { mkdir } from 'fs/promises';
+import { readdir, mkdir, writeFile, access, stat } from 'fs/promises';
+import { pathToFileURL } from 'url';
 import fonter from 'gulp-fonter';
 import ttf2woff2 from 'gulp-ttf2woff2';
 import notifier from 'node-notifier';
@@ -37,8 +38,6 @@ import colors from 'ansi-colors';   // добавление цвета в соо
 import open from 'open';   // открыть браузер
 import vinylFtp from 'vinyl-ftp';   // FTP
 import svgmin from 'gulp-svgmin';   // сжатие SVG
-
-
 
 const sass = gulpSass(dartSass);
 const server = browserSync.create();
@@ -62,7 +61,12 @@ export const plugins = {
   replace,
   path,
   fs,
+  readdir,
   mkdir,
+  writeFile,
+  access,
+  stat,
+  pathToFileURL,
   fonter,
   ttf2woff2,
   notifier,

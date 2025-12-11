@@ -1,12 +1,10 @@
-import { pathToFileURL } from "url"; // для преобразования путей
-import path from "path"; // для определения абсолютного или относительного пути
 import { plugins } from './gulp/config/plugins.mjs'; // плагины
 import { setFolders } from './gulp/config/setings_folders.mjs'; // папки текущего проекта
-import { setings } from './gulp/setings/setings.mjs'; // настройки по умолчанию
+import { loadSettings } from './gulp/utils/loadSettings.mjs';
 import { paths } from './gulp/config/paths.mjs'; // пути
 import { handleError, plumberError } from './gulp/tasks/errors.mjs'; // ошибки
 import { clean, cleanSprite } from './gulp/tasks/del.mjs'; // удаление
-import { copyFiles, copyRobots, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './gulp/tasks/copy.mjs'; // копирование
+import { copyFiles, copyPhp, copyRobots, gifs, copySvg, copyFonsts, copyProcessedImages, copySvgSprite } from './gulp/tasks/copy.mjs'; // копирование
 import { fonts, fontsStyle } from './gulp/tasks/fonts.mjs'; // шрифт
 import { processImages, createDirs } from './gulp/tasks/images.mjs'; // img
 import { svgSpr } from './gulp/tasks/svg.mjs'; // svg
@@ -23,28 +21,25 @@ import { deploy } from './gulp/tasks/ftp.mjs'; // FTP
 global.add = {
   plugins,      // плагины 
   paths,        // пути
-  setings,      // настройки
   setFolders,
   handleError,  // ошибки для .pipe
   plumberError  // ошибки
 };
-// Асинхронная задача для динамического импорта модуля с использованием переменного пути
-const loadModule = async function () {
-  try {
-    let modulePath = paths.setings;
-    if (path.isAbsolute(modulePath)) { // если путь абсолютный:
-      modulePath = pathToFileURL(modulePath).href;
-    } else {
-      modulePath = path.resolve(modulePath);
-    }
-    // const module = await import(`./${paths.setings}`); // Используем переменную для пути
-    const module = await import(modulePath); // импорт модуля
+// Добавляем настройки с учетом пользовательских
+async function init() {
+  const finalSettings = await loadSettings(paths.setings);
+  // обновляем глобальную переменную
+  global.add = {
+    plugins,
+    paths,
+    setFolders,
+    handleError,
+    plumberError,
+    setings: finalSettings, // настройки
+  };
+}
+await init();
 
-    global.add.setings = module.setings;  // Обновляем глобальную переменную
-  } catch (err) {
-    console.error('Ошибка при импорте модуля "setings":', err);
-  }
-};
 // Отслеживание изменений и удалений
 function watchFiles() {
   plugins.gulp.watch(paths.styles.watch, styles);
@@ -114,6 +109,7 @@ function watchFiles() {
 // Копирование
 const copyAll = plugins.gulp.series(
   copyFiles,
+  copyPhp,
   gifs,
   copySvg,
   copyProcessedImages,
@@ -132,20 +128,28 @@ const build = plugins.gulp.series(
 // Основные задачи и наблюдение
 const dev = plugins.gulp.series(
   nevProject,
-  loadModule,
+  // loadModule,
   clean,
   build,
   plugins.gulp.parallel(server, watchFiles),
 );
 
 // Задача для работы со спрайтом SVG
-const svg = plugins.gulp.series(loadModule, cleanSprite, svgSpr);
+const svg = plugins.gulp.series(
+  // loadModule,
+  cleanSprite,
+  svgSpr
+);
 
 // Создание ZIP
-const zip = plugins.gulp.series(loadModule, build, addZip);
+const zip = plugins.gulp.series(
+  // loadModule,
+  build,
+  addZip
+);
 
 const ftp = plugins.gulp.series(
-  loadModule,
+  // loadModule,
   build,
   copyRobots,
   deploy

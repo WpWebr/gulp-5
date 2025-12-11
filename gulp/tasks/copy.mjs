@@ -26,6 +26,86 @@ export function copyFiles(done) {
   done();
 }
 
+// Копирование PHP-файлов и добавление index.php в папки с PHP файлами
+
+// Рекурсивный поиск PHP-файлов через Node.js
+async function findPhpFiles(dir) {
+  let result = [];
+
+  const entries = await add.plugins.readdir(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = add.plugins.path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      // Обходим вложенную папку
+      result = result.concat(await findPhpFiles(fullPath));
+    } else if (entry.isFile() && entry.name.endsWith('.php')) {
+      result.push(fullPath);
+    }
+  }
+
+  return result;
+}
+
+export async function copyPhp() {
+
+  if (!add.setings.copyPHP) {
+    console.log('Задача copyPhp отключена через флаг в setings.mjs');
+    return;
+  }
+
+  const srcDir = add.paths.src;   // абсолютный или относительный путь
+  const destDir = add.paths.dest; // абсолютный или относительный
+
+  // 1. Ищем .php вручную (без glob)
+  const phpFiles = await findPhpFiles(srcDir);
+
+  if (phpFiles.length === 0) {
+    console.log('Нет PHP-файлов для копирования.');
+    return;
+  }
+
+  // 2. Получаем список директорий, где есть .php
+  const phpDirs = [...new Set(
+    phpFiles.map(p => add.plugins.path.dirname(p))
+  )];
+
+  // 3. Копируем PHP (Gulp автоматически создаёт папки)
+  await new Promise(resolve => {
+    add.plugins.gulp.src(add.plugins.path.join(srcDir, '**/*.php'), { base: srcDir })
+      .pipe(add.plugins.gulp.dest(destDir))
+      .on('end', resolve);
+  });
+
+  // 4. Создаём index.php (только если его нет)
+  const indexContent = `<?php
+// Silence is golden.
+`;
+
+  for (const phpDir of phpDirs) {
+
+    // Строим путь относительно src
+    const relative = add.plugins.path.relative(srcDir, phpDir);
+
+    // Путь в dist
+    const finalDir = add.plugins.path.join(destDir, relative);
+    const indexPath = add.plugins.path.join(finalDir, 'index.php');
+
+    try {
+      await add.plugins.access(indexPath); // файл существует
+      continue;
+    } catch {
+      // Файл НЕ существует → создаём
+      await add.plugins.mkdir(finalDir, { recursive: true });
+      await add.plugins.writeFile(indexPath, indexContent);
+      console.log('Создан:', indexPath);
+    }
+  }
+
+  console.log('PHP файлы скопированы, index.php добавлены в папки с PHP файлами.');
+}
+
 // Копирование robots.txt
 export function copyRobots() {
   return add.plugins.gulp.src(add.paths.robots.src)
@@ -64,25 +144,6 @@ export function copyFonsts() {
 
 // Копирование обработанных изображений из src/img и src/img_min в dist/images
 export const copyProcessedImages = plugins.gulp.series(copyImg, copyImgMin);
-
-// export const copyProcessedImages = (() => {
-//   return add.plugins.gulp.series(copyImg, copyImgMin);
-// })();
-
-// export async function copyProcessedImages(){
-//   return add.plugins.gulp.series(copyImg, copyImgMin);
-// }
-
-// export function copyProcessedImages(){
-//   return add.plugins.gulp.src(add.paths.images.srcDest, { encoding: false })
-//     .pipe(add.handleError('CopyProcessedImages'))
-//     .pipe(add.plugins.newer(add.paths.images.dest))
-//     .pipe(add.plugins.gulp.dest(add.paths.images.dest))
-//     .pipe(add.plugins.gulp.src(add.paths.images.imgMinSrc, { encoding: false }))
-//     .pipe(add.handleError('CopyProcessedImages'))
-//     .pipe(add.plugins.newer(add.paths.images.dest))
-//     .pipe(add.plugins.gulp.dest(add.paths.images.dest));
-// }
 
 function copyImg() {
   return add.plugins.gulp.src(add.paths.images.srcDest, { encoding: false })
