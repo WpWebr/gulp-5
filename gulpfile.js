@@ -40,6 +40,17 @@ async function init() {
 }
 await init();
 
+// const finalSettings = await loadSettings(paths.setings);
+
+// global.add = {
+//   plugins,
+//   paths,
+//   setFolders,
+//   handleError,
+//   plumberError,
+//   setings: finalSettings,
+// };
+
 // Отслеживание изменений и удалений
 function watchFiles() {
   plugins.gulp.watch(paths.styles.watch, styles);
