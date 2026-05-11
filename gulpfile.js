@@ -17,6 +17,7 @@ import { info } from './gulp/tasks/info.mjs'; // информация о зап�
 import { addZip } from './gulp/tasks/zip.mjs'; // создание ZIP
 // import { deploy } from './gulp/tasks/ftp.mjs'; // FTP
 import { deploy } from './gulp/tasks/ftp.mjs'; // FTP
+import { deploy } from './gulp/tasks/favicon.mjs'; // FTP
 // глобальная переменная
 global.add = {
   plugins,      // плагины 
@@ -166,6 +167,13 @@ const ftp = plugins.gulp.series(
   deploy
 );
 
+// Задача "Генератор фавиконов"
+const favicon = plugins.gulp.series(
+  // loadModule,
+  cleanSprite,
+  svgSpr
+);
+
 export {
   html,
   ftp,
@@ -176,6 +184,7 @@ export {
   fonts, // конвертация и стили
   fontsStyle, // стили без конвертации
   processImages,
+  favicon, // Генератор фавиконов
 }
 
 // Задача по умолчанию

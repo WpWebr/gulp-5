@@ -439,6 +439,10 @@ dist/
 - gulp-if                        // Условное ветвление
 - gulp-htmlmin                   // Сжатие HTML и др.
 
+#### Генератор фавиконов для Gulp [gulp-real-favicon](http://realfavicongenerator.net/favicon/gulp)
+ 
+npm install --save-dev @realfavicongenerator/gulp-real-favicon
+
 #### Плагины для для работы с BEM и сортировкой CSS (+ см. дальше "Настройки VS Code")
 
 - stylelint                        // основной линтер

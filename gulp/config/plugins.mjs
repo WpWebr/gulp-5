@@ -38,6 +38,8 @@ import colors from 'ansi-colors';   // добавление цвета в соо
 import open from 'open';   // открыть браузер
 import vinylFtp from 'vinyl-ftp';   // FTP
 import svgmin from 'gulp-svgmin';   // сжатие SVG
+import realFavicon from '@realfavicongenerator/gulp-real-favicon'; // генератор фавиконов
+
 
 const sass = gulpSass(dartSass);
 const server = browserSync.create();
@@ -86,4 +88,5 @@ export const plugins = {
   open,
   vinylFtp,
   svgmin,
+  realFavicon,
 };

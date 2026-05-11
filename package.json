@@ -9,12 +9,14 @@
     "build": "gulp build --build",
     "zip": "gulp zip --build",
     "ftp": "gulp ftp --build",
-    "svg": "gulp svg"
+    "svg": "gulp svg",
+    "favicon": "gulp favicon"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@realfavicongenerator/gulp-real-favicon": "^0.8.3",
     "browser-sync": "3.0.2",
     "del": "7.1.0",
     "group-css-media-queries": "1.4.1",
