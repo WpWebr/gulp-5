@@ -1,144 +1,141 @@
-import { plugins } from '../config/plugins.mjs';
+const FaviconDataFile = 'faviconData.json';
 
-export function favicon() {
-
-  // File where the favicon markups are stored
-  const FaviconDataFile = 'faviconData.json';
-
-  // Generate the icons.
-  add.plugins.gulp.task('generate-favicon', function (done) {
-    add.plugins.realFavicon.generateFavicon({
-      masterPicture: '<your master image>',
-      dest: '<icons output directory>',
-      iconsPath: '/favicons/',
-      design: {
-        "desktop": {
-          "darkIconTransformation": {
-            "type": "none",
-            "backgroundColor": "#ffffff",
-            "backgroundRadius": 0.7,
-            "imageScale": 0.7,
-            "brightness": 1
-          },
-          "darkIconType": "none",
-          "regularIconTransformation": {
-            "type": "background",
-            "backgroundColor": "#ffffff",
-            "backgroundRadius": 0.3,
-            "imageScale": 0.8,
-            "brightness": 1
-          }
-        },
-        "touch": {
-          "transformation": {
-            "type": "background",
-            "backgroundColor": "#ffffff",
-            "backgroundRadius": 0,
-            "imageScale": 0.7,
-            "brightness": 1
-          },
-          "appTitle": "LedexPro"
-        },
-        "webAppManifest": {
-          "transformation": {
-            "type": "background",
-            "backgroundColor": "#ffffff",
-            "backgroundRadius": 0,
-            "imageScale": 0.7,
-            "brightness": 1
-          },
-          "name": "Светодиодные светильники",
-          "shortName": "LedexPro",
-          "backgroundColor": "#ffffff",
-          "themeColor": "#ffffff"
-        }
-      },
-      markupFile: FaviconDataFile
-    }, function () {
-      done();
-    });
-  });
-
-  // Внедрите разметку favicon в ваши HTML-страницы. Эту задачу следует запускать
-  // всякий раз, когда вы изменяете страницу. Вы можете оставить эту задачу
-  // как есть или переработать существующий конвейер обработки HTML.
-  add.plugins.gulp.task('inject-favicon-markups', function () {
-    return add.plugins.gulp.src(['<your HTML files...>'])
-      .pipe(add.plugins.realFavicon.injectFaviconMarkups(JSON.parse(add.plugins.gulp.fs.readFileSync(FaviconDataFile)).favicon.html_code))
-      .pipe(add.plugins.gulp.dest('{htmlDir}'));
-  });
-
+function getMasterIconPath() {
+  const dir = add.plugins.path.join(add.paths.src, 'images/favicon');
+  if (!add.plugins.fs.existsSync(dir)) {
+    throw new Error(`Папка с исходным изображением не найдена: ${dir}`);
+  }
+  const files = add.plugins.fs.readdirSync(dir).filter(f => f.endsWith('.png'));
+  if (files.length === 0) {
+    throw new Error(`В папке ${dir} нет .png файла`);
+  }
+  return add.plugins.path.join(dir, files[0]);
 }
 
+function getFaviconDest() {
+  return add.plugins.path.join(add.paths.src, 'favicons');
+}
 
+function getMarkupFilePath() {
+  return add.plugins.path.join(getFaviconDest(), FaviconDataFile);
+}
 
+export function faviconGenerate(done) {
+  const dest = getFaviconDest();
+  const markupFile = getMarkupFilePath();
 
-// // Предложенный код:
-// var realFavicon = require('@realfavicongenerator/gulp-real-favicon');
-// var fs = require('fs');
+  const settings = {
+    path: '/favicons/',
+    icon: {
+      desktop: {
+        darkIconTransformation: {
+          type: 'none',
+          backgroundColor: '#ffffff',
+          backgroundRadius: 0.7,
+          imageScale: 0.7,
+          brightness: 1
+        },
+        darkIconType: 'none',
+        regularIconTransformation: {
+          type: 'background',
+          backgroundColor: '#ffffff',
+          backgroundRadius: 0.3,
+          imageScale: 0.8,
+          brightness: 1
+        }
+      },
+      touch: {
+        transformation: {
+          type: 'background',
+          backgroundColor: '#ffffff',
+          backgroundRadius: 0,
+          imageScale: 0.7,
+          brightness: 1
+        },
+        appTitle: 'LedexPro'
+      },
+      webAppManifest: {
+        transformation: {
+          type: 'background',
+          backgroundColor: '#ffffff',
+          backgroundRadius: 0,
+          imageScale: 0.7,
+          brightness: 1
+        },
+        name: 'Светодиодные светильники',
+        shortName: 'LedexPro',
+        backgroundColor: '#ffffff',
+        themeColor: '#ffffff'
+      }
+    }
+  };
 
-// // File where the favicon markups are stored
-// var FaviconDataFile = 'faviconData.json';
+  let masterIcon;
+  try {
+    masterIcon = getMasterIconPath();
+  } catch (e) {
+    add.plumberError(e.message, 'faviconGenerate');
+    done();
+    return;
+  }
 
-// // Generate the icons.
-// gulp.task('generate-favicon', function (done) {
-//   realFavicon.generateFavicon({
-//     masterPicture: '<your master image>',
-//     dest: '<icons output directory>',
-//     iconsPath: '/favicons/',
-//     design: {
-//       "desktop": {
-//         "darkIconTransformation": {
-//           "type": "none",
-//           "backgroundColor": "#ffffff",
-//           "backgroundRadius": 0.7,
-//           "imageScale": 0.7,
-//           "brightness": 1
-//         },
-//         "darkIconType": "none",
-//         "regularIconTransformation": {
-//           "type": "background",
-//           "backgroundColor": "#ffffff",
-//           "backgroundRadius": 0.3,
-//           "imageScale": 0.8,
-//           "brightness": 1
-//         }
-//       },
-//       "touch": {
-//         "transformation": {
-//           "type": "background",
-//           "backgroundColor": "#ffffff",
-//           "backgroundRadius": 0,
-//           "imageScale": 0.7,
-//           "brightness": 1
-//         },
-//         "appTitle": "LedexPro"
-//       },
-//       "webAppManifest": {
-//         "transformation": {
-//           "type": "background",
-//           "backgroundColor": "#ffffff",
-//           "backgroundRadius": 0,
-//           "imageScale": 0.7,
-//           "brightness": 1
-//         },
-//         "name": "Светодиодные светильники",
-//         "shortName": "LedexPro",
-//         "backgroundColor": "#ffffff",
-//         "themeColor": "#ffffff"
-//       }
-//     },
-//     markupFile: FaviconDataFile
-//   }, function () {
-//     done();
-//   });
-// });
+  add.plugins.realFavicon.generateFavicon({
+    masterIcon,
+    dest,
+    settings,
+    markupFile
+  }, function () {
+    try {
+      const html = add.plugins.generateFaviconHtml(settings);
+      add.plugins.fs.writeFileSync(markupFile, JSON.stringify(html, null, 2), 'utf8');
+      const htmlDir = add.plugins.path.join(dest, 'html');
+      add.plugins.fs.mkdirSync(htmlDir, { recursive: true });
+      add.plugins.fs.writeFileSync(
+        add.plugins.path.join(htmlDir, 'favicon.html'),
+        html.markups.join('\n'),
+        'utf8'
+      );
+    } catch (e) {
+      add.plumberError(`Ошибка при сохранении HTML кода: ${e.message}`, 'faviconGenerate');
+    }
+    add.plumberError('Готово! Фавиконы сгенерированы.', 'faviconGenerate');
+    done();
+  });
+}
 
-// // Inject the favicon markups in your HTML pages. You should run
-// // this task whenever you modify a page. You can keep this task
-// // as is or refactor your existing HTML pipeline.
-// gulp.task('inject-favicon-markups', function () {
-//   return gulp.src(['<your HTML files...>'])
-//     .pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FaviconDataFile)).favicon.html_code))
-//     .pipe(gulp.dest('{htmlDir}'));
-// });
+export function faviconCopy(done) {
+  const srcDir = getFaviconDest();
+  const distDir = add.plugins.path.join(add.paths.dest, 'favicons');
+
+  if (!add.plugins.fs.existsSync(srcDir)) {
+    done();
+    return;
+  }
+
+  return add.plugins.gulp.src([
+    `${srcDir}/*.{ico,svg,png,webmanifest}`,
+    `!${srcDir}/${FaviconDataFile}`,
+  ], { encoding: false })
+    .pipe(add.handleError('faviconCopy'))
+    .pipe(add.plugins.gulp.dest(distDir));
+}
+
+export function faviconInject(done) {
+  const markupFile = getMarkupFilePath();
+
+  if (!add.plugins.fs.existsSync(markupFile)) {
+    add.plumberError(`Файл данных фавиконов не найден: ${markupFile}. Запустите "gulp favicon"`, 'faviconInject');
+    done();
+    return;
+  }
+
+  const data = JSON.parse(add.plugins.fs.readFileSync(markupFile, 'utf8'));
+
+  return add.plugins.gulp.src(`${add.paths.html.dest}/*.html`)
+    .pipe(add.handleError('faviconInject'))
+    .pipe(add.plugins.realFavicon.injectFaviconMarkups({
+      markups: data.markups,
+      cssSelectors: data.cssSelectors
+    }))
+    .pipe(add.plugins.gulp.dest(add.paths.html.dest));
+}

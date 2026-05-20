@@ -39,6 +39,7 @@ import open from 'open';   // открыть браузер
 import vinylFtp from 'vinyl-ftp';   // FTP
 import svgmin from 'gulp-svgmin';   // сжатие SVG
 import realFavicon from '@realfavicongenerator/gulp-real-favicon'; // генератор фавиконов
+import { generateFaviconHtml } from '@realfavicongenerator/generate-favicon'; // HTML код фавиконов
 
 
 const sass = gulpSass(dartSass);
@@ -89,4 +90,5 @@ export const plugins = {
   vinylFtp,
   svgmin,
   realFavicon,
+  generateFaviconHtml,
 };
