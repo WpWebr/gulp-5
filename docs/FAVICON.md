@@ -1,5 +1,15 @@
 # Генерация фавиконов
 
+## 0. Настройка дизайна
+
+Параметры генерации находятся в `gulp/tasks/favicon.mjs` в объекте `settings`:
+
+- **`desktop`** — иконка для десктопных браузеров (favicon.ico, favicon.svg, favicon-96x96.png)
+- **`touch`** — иконка для iOS (apple-touch-icon.png)
+- **`webAppManifest`** — настройки PWA-манифеста
+
+Для изменения дизайна используйте [RealFaviconGenerator](https://realfavicongenerator.net/favicon/gulp) — получите готовый объект настроек и замените `settings` в файле.
+
 ## 1. Подготовка
 
 Положите исходное изображение в папку:
@@ -36,13 +46,3 @@ gulp favicon
 2. HTML-разметка автоматически вставляется во все `.html` в `<head>`
 
 Если `gulp favicon` не был запущен перед сборкой, фавиконы не скопируются и разметка не будет вставлена — сборка завершится без ошибок.
-
-## 4. Настройка дизайна
-
-Параметры генерации находятся в `gulp/tasks/favicon.mjs` в объекте `settings`:
-
-- **`desktop`** — иконка для десктопных браузеров (favicon.ico, favicon.svg, favicon-96x96.png)
-- **`touch`** — иконка для iOS (apple-touch-icon.png)
-- **`webAppManifest`** — настройки PWA-манифеста
-
-Для изменения дизайна используйте [RealFaviconGenerator](https://realfavicongenerator.net/favicon/gulp) — получите готовый объект настроек и замените `settings` в файле.
