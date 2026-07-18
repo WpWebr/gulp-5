@@ -1,5 +1,7 @@
 const name = '001_ru_avrin_group'; // название текущего проекта
 const allprojects = 'all/2024'; // папка со всеми текущими проектами
+// const name = 'test'; // название текущего проекта
+// const allprojects = '../../temes'; // папка со всеми текущими проектами
 
 // `allSources` и `sources` - исходники для нового проекта
 const allSources = 'apps/sources'; // исходная папка (из неё берём проект `sources`)
