@@ -8,5 +8,5 @@ setings_add.mjs
 # здесь папки за которыми не следим
 dist/
 /all/
-/app/sources/
+/apps/sources/
 /C::/
