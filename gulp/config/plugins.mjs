@@ -17,7 +17,8 @@ import svgSprite from 'gulp-svg-sprite';
 import replace from 'gulp-replace';
 import path from 'path';
 import fs from 'fs';
-import { mkdir } from 'fs/promises';
+import { readdir, mkdir, writeFile, access, stat } from 'fs/promises';
+import { pathToFileURL } from 'url';
 import fonter from 'gulp-fonter';
 import ttf2woff2 from 'gulp-ttf2woff2';
 import notifier from 'node-notifier';
@@ -36,6 +37,9 @@ import log from 'fancy-log';   // вывод сообщений
 import colors from 'ansi-colors';   // добавление цвета в сообщения
 import open from 'open';   // открыть браузер
 import vinylFtp from 'vinyl-ftp';   // FTP
+import svgmin from 'gulp-svgmin';   // сжатие SVG
+import realFavicon from '@realfavicongenerator/gulp-real-favicon'; // генератор фавиконов
+import { generateFaviconHtml } from '@realfavicongenerator/generate-favicon'; // HTML код фавиконов
 
 
 const sass = gulpSass(dartSass);
@@ -60,7 +64,12 @@ export const plugins = {
   replace,
   path,
   fs,
+  readdir,
   mkdir,
+  writeFile,
+  access,
+  stat,
+  pathToFileURL,
   fonter,
   ttf2woff2,
   notifier,
@@ -79,5 +88,7 @@ export const plugins = {
   colors,
   open,
   vinylFtp,
+  svgmin,
+  realFavicon,
+  generateFaviconHtml,
 };
- 

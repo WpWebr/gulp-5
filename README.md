@@ -43,8 +43,8 @@ export const configFTP = {
 - Имя запускаемого или создаваемого проекта и папки с исходниками (для нового проекта) задаются в папке:
  `gulp/config/setings_folders.mjs`
 ```
-const name = 'source'; // название текущего проекта
 const allprojects = 'app/source'; // папка со всеми текущими проектами
+const name = 'source'; // название текущего проекта
 ```
 - для создания нового пректа задайте его название переменной 
 `name`
@@ -60,7 +60,7 @@ const allprojects = 'app/source'; // папка со всеми текущими
 `allprojects`/`name`/dist
 - для переключения на другую верстку задайте её название `name` и путь `allprojects` к каталогу
 - при создании нового основрого каталога (по умолчанию `apps`) его имя вносится в `.gitignire`
-- вы можете изменить папку из крторой перенрстся исходники в соответствующих переменных:
+- вы можете изменить папку из которой переносятся исходники в соответствующих переменных:
  `allSources` и `sources`:
 ```
 const allSources = 'apps/sources'; // исходная папка (из неё берём проект `sources`)
@@ -171,9 +171,10 @@ webpCSS: true, // поддержка .webp в CSS
 - если сборка запущена, то спрайт обновляется при добавления новых `.svg`
 
 ### Обработка CSS (stules.mjs)
+- все файлы лежащие в src/scss и не начинающиеся с "_" (например _fonts.scss не буудет обработан как отдельный файл) компилируются в отдельные файлы `название.min.css`
 - Компиляция SCSS в CSS
 - замена `@img/` на `../images/`
-- в CSS добаляется стиль для `.webp` (см. "Использование изображений `.webp` в CSS" )
+- в CSS добавляется стиль для `.webp` (см. "Использование изображений `.webp` в CSS" )
 - вендорные префиксы
 - групировка медиа запросов
 - сжатие - настройки в файле `[путь к папке проекта]/setings/setings.mjs`:
@@ -247,15 +248,16 @@ noCleanCSSfile: 1, // создавать не сжатый файл style.css
 |   |           │   |   └── stask            
 |   |           │   |       └── sprite.symbol.html  # -- инструкция
 |   |           │   └── svg                    # .svg - не для спрайта
-|   |           ├── js                         # Скрипты
-|   |           │   ├── modules                 # - подключаемые модули
-|   |           │   │   └── functions.js         # -- основные функции (настройки слайдеров и т.п.)
-|   |           │   └── app.js                  # - главный скрипт - подключение всех скриптов
-|   |           ├── scss                       # Стили сайта ( в scss-синтаксисе )
-|   |           │   ├── _fonts.scss             # - подключение шрифтов - создается автоматически
-|   |           │   └── style.scss              # - главный файл стилей
-|   |           ├── index.html                 # Главный html-файл
-|   |           └── index.pug                  # Главный pug-файл
+|   |           ├── inc                       # Файлы PHP для WordPress - переносятся как есть
+|   |           ├── js                        # Скрипты
+|   |           │   ├── modules                # - подключаемые модули
+|   |           │   │   └── functions.js        # -- основные функции (настройки слайдеров и т.п.)
+|   |           │   └── app.js                 # - главный скрипт - подключение всех скриптов
+|   |           ├── scss                      # Стили сайта ( в scss-синтаксисе )
+|   |           │   ├── _fonts.scss            # - подключение шрифтов - создается автоматически
+|   |           │   └── style.scss             # - главный файл стилей
+|   |           ├── index.html                # Главный html-файл
+|   |           └── index.pug                 # Главный pug-файл
 |   |    
 |   └── (название каталога)             # Каталог для проектов (про создание/перключение см. выше)
 |       └── (название проекта)            # текущий проект (про создание/перключение см. выше)
@@ -290,6 +292,8 @@ noCleanCSSfile: 1, // создавать не сжатый файл style.css
 ├── node_modules                 # "системная" - создается автоматически
 │
 ├── .gitignore                   # игнорируемые файлы для Git
+|
+├── .stylelintrc.json            # файл с настройками Stylelint 
 |
 ├── gulpfile.js                  # файл с настройками Gulp
 ├── package-lock.json            # "системный" - создается автоматически
@@ -387,27 +391,6 @@ dist/
 └── README.md 
 ```
 
-### Настройки VS Code
-
-- открываем терминал
-- Выберите профиль по умолчанию
-- выбираем PowerShell
-
-#### Плагин для VS Code
-- `Path Autocomplete` - устанавливаем (в VS Code)
-- `F1` ищем `Open Settings (JSON)`
-(пользавательские настройки - settings.json)
-- прописываем:
-```
-"path-autocomplete.pathMappings": {
-"@img": "${folder}/(путь к проекту)/src/images", // псевдоним для изображений
-"@scss": "${folder}/(путь к проекту)/src/scss", // псевдоним для scss
-"@js": "${folder}/(путь к проекту)/src/js", // псевдоним для js
-},
-```
-- "путь к проекту" - по умолчанию это `apps/sources/source`
-- теперь например при написании `@img` будет работать поиск по `./apps/sources/source/images` и выводить подсказки имеющихся файлов
-
 ### Установка плагинов ( npm i -D < название >)
 (все плагины подключаются в файле `gulp/config/plugins.mjs` c последующим импортом)
 - gulp                     // Галп
@@ -456,6 +439,19 @@ dist/
 - gulp-if                        // Условное ветвление
 - gulp-htmlmin                   // Сжатие HTML и др.
 
+#### Генератор фавиконов для Gulp [gulp-real-favicon](http://realfavicongenerator.net/favicon/gulp)
+ 
+npm install --save-dev @realfavicongenerator/gulp-real-favicon
+
+#### Плагины для для работы с BEM и сортировкой CSS (+ см. дальше "Настройки VS Code")
+
+- stylelint                        // основной линтер
+- stylelint-config-standard-scss   // стандартные правила для SCSS
+- stylelint-config-prettier-scss   //  совместимость с Prettier
+- stylelint-order                  // сортировка CSS-свойств
+- stylelint-selector-bem-pattern   // проверка BEM-структуры
+
+
 ### Удаление плагинов
 - Эта команда удаляет пакет из папки `node_modules`, в файле `package.json` информация о данном пакете остается: 
 ```
@@ -465,6 +461,118 @@ npm uninstall < название >
 ```
 npm uninstall < название > --save
 ```
+
+### Настройки VS Code
+
+- открываем терминал
+- Выберите профиль по умолчанию
+- выбираем PowerShell
+
+#### Плагины для VS Code
+- `Path Autocomplete` - устанавливаем (в VS Code)
+- `Stylelint` - устанавливаем (в VS Code)
+- `F1` ищем `Open Settings (JSON)`
+(пользавательские настройки - settings.json)
+- прописываем:
+```
+"path-autocomplete.pathMappings": {
+"@img": "${folder}/(путь к проекту)/src/images", // псевдоним для изображений
+"@scss": "${folder}/(путь к проекту)/src/scss", // псевдоним для scss
+"@js": "${folder}/(путь к проекту)/src/js", // псевдоним для js
+},
+"editor.codeActionsOnSave": {
+  "source.fixAll.stylelint": true
+},
+"stylelint.validate": [
+  "css",
+  "scss"
+]
+
+```
+- "путь к проекту" - по умолчанию это `apps/sources/source`
+- теперь например при написании `@img` будет работать поиск по `./apps/sources/source/images` и выводить подсказки имеющихся файлов
+
+#### Создаём конфиг Stylelint
+В корне проекта создаём файл .stylelintrc.json и вставляем следующий конфиг:
+
+```
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-prettier-scss"
+  ],
+  "plugins": [
+    "stylelint-order",
+    "stylelint-selector-bem-pattern"
+  ],
+  "rules": {
+    "plugin/selector-bem-pattern": {
+      "componentName": "[a-z]+(?:-[a-z]+)*",
+      "preset": "bem",
+      "componentSelectors": {
+        "initial": "^\\.{component}(?:__[a-z0-9-]+)?(?:_[a-z0-9-]+)?$"
+      }
+    },
+    "order/properties-order": [
+      [
+        "position",
+        "top",
+        "right",
+        "bottom",
+        "left",
+        "z-index",
+        "display",
+        "flex",
+        "flex-direction",
+        "justify-content",
+        "align-items",
+        "width",
+        "height",
+        "min-width",
+        "max-width",
+        "min-height",
+        "max-height",
+        "margin",
+        "padding",
+        "font",
+        "font-family",
+        "font-size",
+        "font-weight",
+        "line-height",
+        "text-align",
+        "color",
+        "background",
+        "border",
+        "border-radius",
+        "box-shadow",
+        "transition",
+        "transform",
+        "animation"
+      ],
+      {
+        "unspecified": "bottomAlphabetical"
+      }
+    ]
+  }
+}
+
+```
+#### Что делает этот конфиг:
+- BEM-валидация
+- Разрешены классы в формате:
+```
+.block
+.block_mod
+.block__element
+.block__element_mod
+Plain text
+```
+- Запрещены двойные элементы или неправильные модификаторы.
+- Сортировка CSS-свойств:
+  - Свойства упорядочены по логическим группам: layout → box model → typography → visual → animation.
+  - Неопределённые свойства идут в алфавитном порядке внизу.
+  - SCSS-вложенности
+  - Поддерживаются вложенные селекторы с &__element и &_mod.
 
 ### Подключение модулей js
 #### Подключение слайдера Swiper из npm-modules

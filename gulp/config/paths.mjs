@@ -5,7 +5,6 @@ const prodject = `${setFolders.allprojects}/${setFolders.name}`;// текущи�
 const src = `${prodject}/src` // папка с исходниками
 // const dest = `${prodject}/${setings.dest}`; // папка с результатами
 const dest = `${prodject}/dist`; // папка с результатами
-
 const spriteName = 'sprite.svg'; // название спрайта
 
 export const paths = {
@@ -19,17 +18,18 @@ export const paths = {
   ftp: `${prodject}/setings/ftp.mjs`,// настройки ftp
   spriteName,
   styles: {
-    src: `${src}/scss/style.scss`,
+    // src: `${src}/scss/style.scss`,
+    src: `${src}/scss/*.scss`,
     watch: `${src}/scss/**/*.scss`,
     dest: `${dest}/css`,
-  }, 
+  },
   scripts: {
     src: `${src}/js/app.js`,
     watch: `${src}/js/**/*.{mjs,js}`,
     dest: `${dest}/js`,
   },
   images: {
-    src: `${src}/images/**/*.{jpg,jpeg,png}`,    
+    src: `${src}/images/**/*.{jpg,jpeg,png}`,
     minDest: `${src}/aa/img`,
     imgMin: `${src}/aa/img_min`,
     imgMinSrc: `${src}/aa/img_min/**/*`,
@@ -56,6 +56,11 @@ export const paths = {
     robots: `${src}/_robots/robots.txt`,
     dest: `${dest}/files`,
   },
+  inc: {
+    src: `${src}/inc/**/*`,
+    incFolder: `${src}/inc/`,
+    dest: `${dest}/inc`,
+  },
   robots: {
     src: `${src}/_robots/robots.txt`,
   },
@@ -70,7 +75,7 @@ export const paths = {
   // },
   fonts: {
     src: `${src}/fonts`,
-    src_woff: `${src}/fonts/fonts_woff`,    
+    src_woff: `${src}/fonts/fonts_woff`,
     scssDest: `${src}/scss`, // Папка для файла _fonts.scss
     scssFile: `_fonts.scss`, // Имя SCSS файла для подключения шрифтов
     dest: `${dest}/fonts`,

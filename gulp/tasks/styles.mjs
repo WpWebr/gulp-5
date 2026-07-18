@@ -11,11 +11,10 @@ function cssMedia() {
   });
 }
 
-
 export function styles() {
   const sourcemaps = !(add.setFolders.isBuild || add.setings.ayBuild);
   return add.plugins.gulp.src(add.paths.styles.src, { sourcemaps: sourcemaps })
-  // return add.plugins.gulp.src(add.paths.styles.src, { sourcemaps: true })
+    // return add.plugins.gulp.src(add.paths.styles.src, { sourcemaps: true })
     .pipe(add.handleError('Styles'))
     // .pipe(add.plugins.gulpIf(!add.setFolders.isBuild, add.plugins.sourcemaps.init()))
     .pipe(add.plugins.sass({ // Компиляция SCSS в CSS
@@ -35,9 +34,20 @@ export function styles() {
     .pipe(cssMedia())// групировка медиа запросов
     .pipe(add.plugins.gulpIf(add.setings.noCleanCSSfile, add.plugins.gulp.dest(add.paths.styles.dest))) // сохранить не сжатый файл
     .pipe(add.plugins.cleanCSS()) // сжатие
-    .pipe(add.plugins.rename({
-      extname: '.min.css'
+    // .pipe(add.plugins.rename({
+    //   extname: '.min.css'
+    // }))
+    .pipe(add.plugins.rename(function (path) {
+      // Проверяем имя исходного файла без расширения
+      if (path.basename === 'style-rtl') {
+        // Для style-rtl.css → style.min-rtl.css
+        path.basename = 'style.min-rtl';
+      } else {
+        // Для всех остальных — просто добавляем .min перед .css
+        path.basename += '.min';
+      }
+      path.extname = '.css';
     }))
-    .pipe(add.plugins.gulp.dest(add.paths.styles.dest, { sourcemaps: sourcemaps}))
+    .pipe(add.plugins.gulp.dest(add.paths.styles.dest, { sourcemaps: sourcemaps }))
     .pipe(add.plugins.server.stream());
 } 
